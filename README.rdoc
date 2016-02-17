@@ -1,0 +1,3 @@
+# Asignaciónes de Grupos
+
+Plugin de Redmine que permite realizar asignaciones a un grupo especifico y filtrar a que usuario de dicho grupo se le desea asignar la petición.
