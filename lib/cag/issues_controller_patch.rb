@@ -10,8 +10,7 @@ module CAG
 			# Same as typing in the class
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
-		    	alias_method_chain :show, :assigned_group_show
-		    	alias_method_chain :new, :assigned_group_new
+		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form]
 		    	skip_before_filter :authorize, :only => [:get_users_group]
 		  	end
 		end
@@ -20,16 +19,9 @@ module CAG
 		end
 
 		module InstanceMethods
-		    def show_with_assigned_group_show
+			# Metodo que recoge todos los diferentes grupos de usuarios que exiten.
+		    def set_assigned_group
 		    	@assigned_groups = Group.order("lastname ASC").all.collect {|p| [p.lastname, p.id]}
-
-		    	show_without_assigned_group_show
-		    end
-
-		     def new_with_assigned_group_new
-		    	@assigned_groups = Group.order("lastname ASC").all.collect {|p| [p.lastname, p.id]}
-
-		    	new_without_assigned_group_new
 		    end
 
 		    # Metodo que devuelve en formato .json los usuarios que pertenecen a un determinado grupo.
