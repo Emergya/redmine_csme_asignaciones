@@ -1,0 +1,9 @@
+<%= csrf_meta_tag %>
+<% content_for :header_tags do %>
+   <%= javascript_include_tag "/cag_issues.js", :plugin => 'redmine_csme_asignacion_grupos' %>
+<% end %>
+
+<% if @issue.safe_attribute? 'group_id' %>
+	<p><%= f.select :group_id, @assigned_groups, {:include_blank => true} %></p>
+<% end %>
+
