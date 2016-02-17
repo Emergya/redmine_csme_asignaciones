@@ -2,7 +2,7 @@ require 'cag/group_patch'
 require 'cag/issue_patch'
 require 'cag/issues_controller_patch'
 
-Redmine::Plugin.register :redmine_csme_asignacion_grupos do
+Redmine::Plugin.register :redmine_csme_asignaciones do
   name 'Redmine Csme Asignacion Grupos plugin'
   author 'jresinas, mabalos'
   description 'Plugin de Redmine que pertime la asignacion de grupos en las peticiones.'
