@@ -1,9 +1,46 @@
 <%= csrf_meta_tag %>
 <% content_for :header_tags do %>
-   <%= javascript_include_tag "/cag_issues.js", :plugin => 'redmine_csme_asignacion_grupos' %>
+   <%= javascript_include_tag "/cag_issues.js", :plugin => 'redmine_csme_asignaciones' %>
+   <%= stylesheet_link_tag "cag_issues.css", :plugin => 'redmine_csme_asignaciones', :media => "screen" %>
 <% end %>
 
 <% if @issue.safe_attribute? 'group_id' %>
 	<p><%= f.select :group_id, @assigned_groups, {:include_blank => true} %></p>
 <% end %>
 
+<div id="dialog_providers" title="Busqueda de proveedores">
+	<p>Por favor, introduce la información para realizar la busqueda:</p>
+
+	<hr class="hr_form_provider"><br>
+	<div class='form_providers_label'><b>Expediente:</b></div>
+	<div><input type="text" id="prov_file" name="file"/></div>
+
+	<div class='form_providers_label'><b>Código de artículo:</b></div>
+	<div><input type="text" id="prov_article" name="article"/></div>
+
+	<div class='form_providers_label'><b>Código de proveedor:</b></div>
+	<div><input type="text" id="prov_provider" name="provider"/></div>
+
+	<br><hr class="hr_form_provider">
+	<div class="div_btn_provider"><button type="submit" id="btn_form_provider">Busqueda</button></div>
+	<hr class="hr_form_provider_last">	
+
+</div>
+
+<script>
+	$setting_file_id     = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_file] %>;
+	$setting_article_id  = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_article] %>;
+	$setting_provider_id = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider] %>;
+
+	// $setting_file_id     = <%= @setting_file_id %>;
+	// $setting_article_id  = <%= @setting_article_id %>;
+	// $setting_provider_id = <%= @setting_provider_id %>;
+
+	// Inicialización de la ventana modal dialog.
+	$("#dialog_providers").dialog({ 
+		autoOpen: false,
+		modal: true,
+		minWidth: 810,
+		maxWidth: 810,
+	});
+</script>

@@ -10,4 +10,5 @@ Redmine::Plugin.register :redmine_csme_asignaciones do
   author_url 'http://www.emergya.es'
 
   requires_redmine_plugin :adapter_deface, :version_or_higher => '0.0.1'
+  settings :default => {}, :partial => 'settings/redmine_csme_asignaciones'
 end

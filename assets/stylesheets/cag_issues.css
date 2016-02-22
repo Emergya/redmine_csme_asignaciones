@@ -1,0 +1,48 @@
+.form_providers_label{
+	width: 150px; 
+	float: left; 
+	margin-right: 15px; 
+	text-align: right;
+}
+
+.div_btn_provider{
+	margin-left: 75px !important;
+}
+
+.cursive_length{
+	margin-left: 15px !important; 
+}
+
+.hr_form_provider{	
+	margin-top: 5px !important;
+	margin-bottom: 5px !important;
+}
+
+.container_providers{
+	margin-top: 10px;
+}
+
+.container_providers > input {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#btn_container_providers{
+	width: 75px;
+	margin-top: 5px;
+	margin-left: 75px;
+}
+
+.length_contacts{
+	margin: 5px;
+}
+
+.hr_form_provider_last{
+	margin-bottom: 25px;
+}
+
+.contact_not_found{
+    color: #FF0000;
+	margin-left: 15px;
+
+}
