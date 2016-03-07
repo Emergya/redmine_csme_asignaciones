@@ -134,7 +134,7 @@ $(document).ready(function(){
 				url: "/get_provider_contact",
 				type: "GET",
 				data: { provider_id: provider_id },
-				success: function(response) { setSelectProvider(response); },
+				success: function(response) { setSelectProvider(response.contact); },
 				error: function(xhr) { console.log(xhr); }
 			});
 		} else {
@@ -145,8 +145,15 @@ $(document).ready(function(){
 		}
 	});
 
-	function setSelectProvider(data){
-		if(data.contact.length > 0){
+	function setSelectProvider(contact){
+		if($.isEmptyObject(contact)){
+			// Desactivamos botón de aceptar.
+			$("#btn_container_providers").attr("disabled", true)
+			// Eliminamos el mensaje de error de si no hay contactos en el caso de que se encuentre.
+			$(".contact_not_found").remove();
+			// Mostramos el mensaje de error indicando que no hay contactos de nivel 1 para ese proveedor.
+			$(".container_providers").append("<i class='contact_not_found'>No existe ningún contacto de nivel 1 para ese proveedor.<i>")
+		} else {
 			$("#btn_container_providers").attr("disabled", false);
 
 			// Eliminamos los options del SELECT 'Asignado a'.
@@ -163,18 +170,10 @@ $(document).ready(function(){
 			});
 
 			// Añadimos el contacto encontrado cuando se ha seleccionado un proveedor.
-			$("#issue_assigned_to_id").append("<option value="+data.contact[0].gg_contact.id+" selected>"+data.contact[0].gg_contact.name+"</option>");
+			$("#issue_assigned_to_id").append("<option value="+contact.id+" selected>"+contact.firstname+" "+contact.lastname+"</option>");
 
 			// Cerramos el dialog.
 			$("#dialog_providers").dialog("destroy");
-			
-		} else {
-			// Desactivamos botón de aceptar.
-			$("#btn_container_providers").attr("disabled", true)
-			// Eliminamos el mensaje de error de si no hay contactos en el caso de que se encuentre.
-			$(".contact_not_found").remove();
-			// Mostramos el mensaje de error indicando que no hay contactos de nivel 1 para ese proveedor.
-			$(".container_providers").append("<i class='contact_not_found'>No existe ningún contacto de nivel 1 para ese proveedor.<i>")
 		}
 	}
 

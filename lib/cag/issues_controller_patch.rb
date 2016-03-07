@@ -10,10 +10,8 @@ module CAG
 			# Same as typing in the class
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
-		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form]
+		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update]
 		    	skip_before_filter :authorize, :only => [:get_users_group, :get_provider_status, :get_providers, :get_code_file, :get_provider_contact]
-		  	
-		    	# alias_method_chain :show, :get_settings
 		  	end
 		end
 
@@ -95,22 +93,14 @@ module CAG
 
 		    # Devuelve en formato .json el contacto de nivel 1 del proveedor
 		    def get_provider_contact
-		    	article = GgArticle.find  params[:provider_id]
-		    	contact = article.gg_contacts.where("level = 1")
+		    	article = GgArticle.find(params[:provider_id])
+		    	contact = article.level_1.present? ? User.find(article.level_1) : nil
 
 		    	respond_to do |format|
-		    		format.json { render json: {:contact => contact} }
+		    		format.json { render json: {:contact => contact.present? ? contact.attributes : nil} }
 		    	end
 		    end
 
-		    # Para recoger los campos personalizados en el 'setting' del plugin
-		    # def show_with_get_settings
-		    # 	@setting_file_id     = Setting.plugin_redmine_csme_asignaciones[:setting_issue_file]
-		    # 	@setting_article_id  = Setting.plugin_redmine_csme_asignaciones[:setting_issue_article]
-		    # 	@setting_provider_id = Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider]
-
-		    # 	show_without_get_settings
-		    # end
 		end
 	end
 end
