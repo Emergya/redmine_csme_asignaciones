@@ -12,21 +12,21 @@
 	<legend><b>Campos personalizados</b></legend>
 		Expediente: &nbsp;
 		<%= select_tag 'settings[setting_issue_file]',
-			options_from_collection_for_select(CustomField.all, :id, :name, @settings['setting_issue_file']),
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_file']),
 			:include_blank => true
 		%>
 		<br>
 
 		Código de artículo: &nbsp;
 		<%= select_tag 'settings[setting_issue_article]',
-			options_from_collection_for_select(CustomField.all, :id, :name, @settings['setting_issue_article']),
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_article']),
 			:include_blank => true
 		%>
 		<br>		
 		
 		Código de proveedor: &nbsp;
 		<%= select_tag 'settings[setting_issue_provider]',
-			options_from_collection_for_select(CustomField.all, :id, :name, @settings['setting_issue_provider']),
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_provider']),
 			:include_blank => true
 		%>
 </fieldset>
