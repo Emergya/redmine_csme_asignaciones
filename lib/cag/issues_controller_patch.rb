@@ -10,7 +10,7 @@ module CAG
 			# Same as typing in the class
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
-		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update]
+		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update, :create]
 		    	skip_before_filter :authorize, :only => [:get_users_group, :get_provider_status, :get_providers, :get_code_file, :get_provider_contact]
 		  	end
 		end
