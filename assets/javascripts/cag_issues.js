@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
-	// En el caso en el que cambio el selector de 'Asignado a grupo'.
-	$(document).on('change', '#issue_group_id', function() {
+	// En el caso en el que cambio el selector de 'Asignado a grupo' o el de 'Estado'.
+	$(document).on('change', '#issue_group_id', '#issue_status_id', function() {
 		// Id del grupo
    		group_id = $(this).val();
    		
@@ -17,7 +17,8 @@ $(document).ready(function(){
 
 	function reloadAssignedTo(data){
 		// Eliminamos los options del SELECT.
-		$("#issue_assigned_to_id").find('option').remove();
+		$("#issue_assigned_to_id option").prop("selected", false);
+		$("#issue_assigned_to_id option").remove();
 
 		// Añadimos las opciones de usuarios que pertenecen al grupo.
 		for(var i=0; i < data.users.length; i++){
@@ -51,6 +52,22 @@ $(document).ready(function(){
 			if(($("#issue_custom_field_values_"+$setting_file_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_article_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_provider_id).val().length !== 0)){
 				getProvidersAjax();
 			}
+
+			// Se limpian el campo de 'Asignado a' antes de abrir el modal para evitar incoherencias si se cierra el modal.
+			// Se asignada en el campo de 'Asignado a grupo' el valor de 'Servicio Técnico'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() == "Servicio Técnico"){
+					$(this).prop("selected", true);
+				}
+				else{
+					// $(this).prop("disabled", true);
+					$(this).remove();
+				}
+			});
+			
+			$("#issue_assigned_to_id option").prop("selected", false);
+			$("#issue_assigned_to_id option").remove();
+
 			// Abrimos el modal
 			$("#dialog_providers").dialog("open");
 		}
@@ -154,20 +171,8 @@ $(document).ready(function(){
 			// Mostramos el mensaje de error indicando que no hay contactos de nivel 1 para ese proveedor.
 			$(".container_providers").append("<i class='contact_not_found'>No existe ningún contacto de nivel 1 para ese proveedor.<i>")
 		} else {
+			// Activamos el botón de aceptar.
 			$("#btn_container_providers").attr("disabled", false);
-
-			// Eliminamos los options del SELECT 'Asignado a'.
-			$("#issue_assigned_to_id").find('option').remove();
-
-			// Ponemos el 'Asignado a grupo' el valor de 'Servicio Técnico'.
-			$("#issue_group_id option").each(function(){
-				if($(this).text() == "Servicio Técnico"){
-					$(this).prop("selected", true);
-				}
-				else{
-					$(this).prop("disabled", true);
-				}
-			});
 
 			// Añadimos el contacto encontrado cuando se ha seleccionado un proveedor.
 			$("#issue_assigned_to_id").append("<option value="+contact.id+" selected>"+contact.firstname+" "+contact.lastname+"</option>");

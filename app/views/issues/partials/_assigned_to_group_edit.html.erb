@@ -5,7 +5,7 @@
 <% end %>
 
 <% if @issue.safe_attribute? 'group_id' %>
-	<p><%= f.select :group_id, @assigned_groups, {:include_blank => true} %></p>
+	<p><%= f.select :group_id, @assigned_groups.reject{ |x| (x[0] == "Servicio Técnico") && @issue.status.name != "Asignada a proveedor"}, {:include_blank => true} %></p>
 <% end %>
 
 <div id="dialog_providers" title="Busqueda de proveedores">

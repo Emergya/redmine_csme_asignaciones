@@ -26,12 +26,18 @@ module CAG
 
 		    # Devuelve en formato .json los usuarios que pertenecen a un determinado grupo.
 		    def get_users_group
-		    	group = Group.find(params[:group_id])
-		    	group_users = group.users.collect{|p| [p.firstname+" "+p.lastname, p.id]}
+		    	if params[:group_id].present?
+			    	group = Group.find(params[:group_id])
+			    	group_users = group.users.collect{|p| [p.firstname+" "+p.lastname, p.id]}
 
-		    	respond_to do |format|
-		    		format.json { render json: {:users => group_users} }
-		    	end
+			    	respond_to do |format|
+			    		format.json { render json: {:users => group_users} }
+			    	end
+			    else
+			    	respond_to do |format|
+			    		format.json { render json: {:users => []} }
+			    	end
+			    end
 		    end
 
 		    # Devuelve en formato .json el estado del proveedor configurado en el plugin
