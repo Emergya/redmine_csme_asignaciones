@@ -64,12 +64,15 @@ $(document).ready(function(){
 					$(this).remove();
 				}
 			});
-			
+
 			$("#issue_assigned_to_id option").prop("selected", false);
 			$("#issue_assigned_to_id option").remove();
 
 			// Abrimos el modal
 			$("#dialog_providers").dialog("open");
+
+			// Añadimos el botón por si se cierra el modal y se desea volver a abrir.
+			$("#issue_assigned_to_id").after("<img id='btn_open_dialog_providers' src='/images/add.png' style='vertical-align: middle; margin-left: 3px; cursor: pointer;'>");
 		}
 	}
 
@@ -190,4 +193,8 @@ $(document).ready(function(){
 		$(".contact_not_found").remove();
 	});
 	
+	// Si se hace click en el botón para volver a abrir el dialog de providers.
+	$(document).on("click", "#btn_open_dialog_providers", function(){
+		$("#dialog_providers").dialog("open");
+	});
 });
