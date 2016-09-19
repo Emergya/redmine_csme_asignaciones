@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
 	// En el caso en el que cambio el selector de 'Asignado a grupo' o el de 'Estado'.
 	$(document).on('change', '#issue_group_id', '#issue_status_id', function() {
 		// Id del grupo
@@ -71,8 +70,8 @@ $(document).ready(function(){
 			// Abrimos el modal
 			$("#dialog_providers").dialog("open");
 
-			// Añadimos el botón por si se cierra el modal y se desea volver a abrir.
-			$("#issue_assigned_to_id").after("<img id='btn_open_dialog_providers' src='/images/add.png' style='vertical-align: middle; margin-left: 3px; cursor: pointer;'>");
+			// Se muestra el botón por si se cierra el modal y se desea volver a abrir.
+			$("#btn_open_dialog_providers").css("visibility","visible");
 		}
 	}
 
@@ -159,7 +158,7 @@ $(document).ready(function(){
 			});
 		} else {
 			// Mostramos un mensaje de error indicando que debe seleccionar un proveedor.
-			$(".container_providers").append("<i class='contact_not_found'>Debe seleccionar un proveedor.<i>");	
+			$(".container_providers").append("<i class='contact_not_found'>Debe seleccionar un proveedor.</i>");	
 			// Desactivamos botón de aceptar.
 			$("#btn_container_providers").attr("disabled", true)	
 		}
@@ -172,7 +171,7 @@ $(document).ready(function(){
 			// Eliminamos el mensaje de error de si no hay contactos en el caso de que se encuentre.
 			$(".contact_not_found").remove();
 			// Mostramos el mensaje de error indicando que no hay contactos de nivel 1 para ese proveedor.
-			$(".container_providers").append("<i class='contact_not_found'>No existe ningún contacto de nivel 1 para ese proveedor.<i>")
+			$(".container_providers").append("<i class='contact_not_found'>No existe ningún contacto de nivel 1 para ese proveedor.</i>")
 		} else {
 			// Activamos el botón de aceptar.
 			$("#btn_container_providers").attr("disabled", false);
