@@ -22,6 +22,12 @@ module CAG
 			# Recoge todos los diferentes grupos de usuarios que exiten.
 		    def set_assigned_group
 		    	@assigned_groups = Group.order("lastname ASC").all.collect {|p| [p.lastname, p.id]}
+
+		    	if @issue.status.id != Setting.plugin_redmine_csme_asignaciones[:provider_status].to_i
+		    		@assigned_groups.reject!{ |x| x[0] == l(:thecnical_service) }
+		    	else
+		    		@assigned_groups.reject!{ |x| x[0] != l(:thecnical_service) }
+		    	end
 		    end
 
 		    # Devuelve en formato .json los usuarios que pertenecen a un determinado grupo.

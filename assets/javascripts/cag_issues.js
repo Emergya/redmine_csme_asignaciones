@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	// En el caso en el que cambio el selector de 'Asignado a grupo' o el de 'Estado'.
-	$(document).on('change', '#issue_group_id', '#issue_status_id', function() {
+	$(document).on('change', '#issue_group_id', function() {
 		// Id del grupo
-   		group_id = $(this).val();
+   		group_id = $("#issue_group_id").val();
    		
    		// Petición para recibir los usuarios que pertenecen a ese grupo.
    		$.ajax({
@@ -15,9 +15,8 @@ $(document).ready(function(){
 	});
 
 	function reloadAssignedTo(data){
-		// Eliminamos los options del SELECT.
-		$("#issue_assigned_to_id option").prop("selected", false);
-		$("#issue_assigned_to_id option").remove();
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
 
 		// Añadimos las opciones de usuarios que pertenecen al grupo.
 		for(var i=0; i < data.users.length; i++){
@@ -40,6 +39,9 @@ $(document).ready(function(){
 	});
 
 	function compareStatuses(data, status_id){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
 		if(status_id == data.provider_status){
 			// Recogemos los valores de los campos 'Expediente', 'Cód.Artículo' y 'Cód.Proveedor'.
 			// y se muestran en el modal como valores por defecto.
@@ -52,8 +54,8 @@ $(document).ready(function(){
 				getProvidersAjax();
 			}
 
-			// Se limpian el campo de 'Asignado a' antes de abrir el modal para evitar incoherencias si se cierra el modal.
 			// Se asignada en el campo de 'Asignado a grupo' el valor de 'Servicio Técnico'
+			console.log($("#issue_group_id option"));
 			$("#issue_group_id option").each(function(){
 				if($(this).text() == "Servicio Técnico"){
 					$(this).prop("selected", true);
@@ -63,9 +65,6 @@ $(document).ready(function(){
 					$(this).remove();
 				}
 			});
-
-			$("#issue_assigned_to_id option").prop("selected", false);
-			$("#issue_assigned_to_id option").remove();
 
 			// Abrimos el modal
 			$("#dialog_providers").dialog("open");
@@ -173,6 +172,9 @@ $(document).ready(function(){
 			// Mostramos el mensaje de error indicando que no hay contactos de nivel 1 para ese proveedor.
 			$(".container_providers").append("<i class='contact_not_found'>No existe ningún contacto de nivel 1 para ese proveedor.</i>")
 		} else {
+			// Eliminar los options del select 'assigned_to'
+			removeOptionsAssignedTo();
+
 			// Activamos el botón de aceptar.
 			$("#btn_container_providers").attr("disabled", false);
 
@@ -181,6 +183,7 @@ $(document).ready(function(){
 
 			// Cerramos el dialog.
 			$("#dialog_providers").dialog("destroy");
+
 		}
 	}
 
@@ -196,4 +199,10 @@ $(document).ready(function(){
 	$(document).on("click", "#btn_open_dialog_providers", function(){
 		$("#dialog_providers").dialog("open");
 	});
+
+	// Eliminar los options del select 'assigned_to'
+	function removeOptionsAssignedTo(){
+		$("#issue_assigned_to_id option").prop("selected", false);
+		$("#issue_assigned_to_id option").remove();
+	}
 });
