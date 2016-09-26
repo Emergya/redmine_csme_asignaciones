@@ -1,16 +1,28 @@
+<% content_for :header_tags do %>
+   <%= stylesheet_link_tag "cag_issues.css", :plugin => 'redmine_csme_asignaciones', :media => "screen" %>
+<% end %>
+
 <fieldset>
-	<legend><b>Estado para proveedor</b></legend>
-		Estado de la petición para <i>'asignado a proveedor'</i>: &nbsp;
+	<legend><b>Configuración de estados</b></legend>
+		<p class='config_select_status'>Estado de la petición para <i>'Asignado a proveedor'</i>: &nbsp;
 		<%= select_tag 'settings[provider_status]',
 			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['provider_status']),
 			:include_blank => true
-		%>
+		%></p>
+		
+		<!--
+		<p class='config_select_status'>Estado de la petición para <i>'Análisis de información CSME'</i>: &nbsp;
+		<%#= select_tag 'settings[analysis_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['analysis_status']),
+			:include_blank => true
+		%></p>
+		-->
 </fieldset>
 <br>
 
 <fieldset>
-	<legend><b>Campos personalizados</b></legend>
-		Expediente: &nbsp;
+	<legend><b>Campos personalizados para 'Detalles del Artículo - CSME'</b></legend>
+		Código de expediente: &nbsp;
 		<%= select_tag 'settings[setting_issue_file]',
 			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_file']),
 			:include_blank => true
@@ -29,4 +41,12 @@
 			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_provider']),
 			:include_blank => true
 		%>
+		<br>
+		<!--
+		Número de serie: &nbsp;
+		<%#= select_tag 'settings[setting_issue_serial_number]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_serial_number']),
+			:include_blank => true
+		%>
+		-->
 </fieldset>

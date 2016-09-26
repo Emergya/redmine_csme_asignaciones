@@ -1,22 +1,33 @@
-.form_providers_label{
+/* CSS Style en común para cuando la petición cambia de estado / Modal    */
+/* ---------------------------------------------------------------------- */
+
+.hr_form_dialog{	
+	margin-top: 5px !important;
+	margin-bottom: 5px !important;
+}
+
+.form_dialog_label{
 	width: 150px; 
 	float: left; 
 	margin-right: 15px; 
 	text-align: right;
 }
 
-.div_btn_provider{
+.div_btn_provider, .div_btn_article{
 	margin-left: 75px !important;
 }
+
+.hr_form_provider_last, .hr_form_article_last{
+	margin-bottom: 25px;
+}
+
+/* CSS Style para cuando la petición pasa al estado 'Asignado a proveedor' / Modal */
+/* ------------------------------------------------------------------------------- */
 
 .cursive_length{
 	margin-left: 15px !important; 
 }
 
-.hr_form_provider{	
-	margin-top: 5px !important;
-	margin-bottom: 5px !important;
-}
 
 .container_providers{
 	margin-top: 10px;
@@ -37,12 +48,28 @@
 	margin: 5px;
 }
 
-.hr_form_provider_last{
-	margin-bottom: 25px;
-}
-
 .contact_not_found{
     color: #FF0000;
 	margin-left: 15px;
 
+}
+
+.guarantee_end_out{
+	background-color: rgba(255,0,0,0.8);
+	font-weight: bold;
+}
+
+.test:hover{
+	font-weight: bold;
+}
+
+/* CSS Style para cuando la petición pasa al estado 'Asignado a proveedor */
+/* ---------------------------------------------------------------------- */
+
+
+/* CSS Style para la sección de configuración del plugin.                 */
+/* ---------------------------------------------------------------------- */
+
+.config_select_status{
+	padding-left: 0px !important;
 }

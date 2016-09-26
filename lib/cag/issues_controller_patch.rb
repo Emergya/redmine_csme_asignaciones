@@ -11,7 +11,7 @@ module CAG
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
 		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update, :create]
-		    	skip_before_filter :authorize, :only => [:get_users_group, :get_provider_status, :get_providers, :get_code_file, :get_provider_contact]
+		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme]
 		  	end
 		end
 
@@ -46,12 +46,13 @@ module CAG
 			    end
 		    end
 
-		    # Devuelve en formato .json el estado del proveedor configurado en el plugin
-		    def get_provider_status
+		    # Devuelve en formato .json los estados configurados en el plugin
+		    def get_status
 		    	provider_status = Setting.plugin_redmine_csme_asignaciones[:provider_status]
+		    	analysis_status = Setting.plugin_redmine_csme_asignaciones[:analysis_status]
 
 		    	respond_to do |format|
-		    		format.json { render json: {:provider_status => provider_status} }
+		    		format.json { render json: {:provider_status => provider_status, :analysis_status => analysis_status} }
 		    	end
 		    end
 
@@ -113,6 +114,9 @@ module CAG
 		    	end
 		    end
 
+		    # def get_articles_csme
+		    	
+		    # end
 		end
 	end
 end

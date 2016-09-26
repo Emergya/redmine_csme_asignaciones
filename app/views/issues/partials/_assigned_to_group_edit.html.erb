@@ -8,39 +8,68 @@
 	<p><%= f.select :group_id, @assigned_groups, {:include_blank => true} %></p>
 <% end %>
 
+<!-- DIALOG 'Busqueda de proveedores' -->
 <div id="dialog_providers" title="Busqueda de proveedores">
 	<p>Por favor, introduce la información para realizar la busqueda:</p>
 
-	<hr class="hr_form_provider"><br>
-	<div class='form_providers_label'><b>Expediente:</b></div>
+	<hr class="hr_form_dialog"><br>
+	<div class='form_dialog_label'><b>Expediente:</b></div>
 	<div><input type="text" id="prov_file" name="file"/></div>
 
-	<div class='form_providers_label'><b>Código de artículo:</b></div>
+	<div class='form_dialog_label'><b>Código de artículo:</b></div>
 	<div><input type="text" id="prov_article" name="article"/></div>
 
-	<div class='form_providers_label'><b>Código de proveedor:</b></div>
+	<div class='form_dialog_label'><b>Código de proveedor:</b></div>
 	<div><input type="text" id="prov_provider" name="provider"/></div>
 
-	<br><hr class="hr_form_provider">
+	<br><hr class="hr_form_dialog">
 	<div class="div_btn_provider"><button type="submit" id="btn_form_provider">Busqueda</button></div>
 	<hr class="hr_form_provider_last">	
-
 </div>
 
+<!-- DIALOG 'Busqueda de artículos' -->
+<!--
+<div id="dialog_articles_csme" title="Busqueda de articulos">
+	<p>Por favor, introduce la información para realizar la busqueda:</p>
+
+	<hr class="hr_form_dialog"><br>
+	<div class='form_dialog_label'><b>Código de centro:</b></div>
+	<div><input type="text" id="article_cod_center" name="center"/></div>
+
+	<div class='form_dialog_label'><b>Código de artículo:</b></div>
+	<div><input type="text" id="article_cod_article" name="article"/></div>
+
+	<div class='form_dialog_label'><b>Código de expediente:</b></div>
+	<div><input type="text" id="article_cod_file" name="file"/></div>
+
+	<div class='form_dialog_label'><b>Código adjudicatario:</b></div>
+	<div><input type="text" id="article_cod_adj" name="adj"/></div>
+
+	<br><hr class="hr_form_dialog">
+	<div class="div_btn_article"><button type="submit" id="btn_form_article_csme">Busqueda</button></div>
+	<hr class="hr_form_article_last">
+</div>
+-->
 <script>
 	$setting_file_id     = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_file] %>;
 	$setting_article_id  = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_article] %>;
 	$setting_provider_id = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider] %>;
 
-	// $setting_file_id     = <%= @setting_file_id %>;
-	// $setting_article_id  = <%= @setting_article_id %>;
-	// $setting_provider_id = <%= @setting_provider_id %>;
-
-	// Inicialización de la ventana modal dialog.
+	// Inicialización de la ventana modal dialog de 'providers'.
 	$("#dialog_providers").dialog({ 
 		autoOpen: false,
 		modal: true,
 		minWidth: 810,
 		maxWidth: 810,
 	});
+
+/*
+	// Inicialización de la ventana modal dialog 'articles'.
+	$("#dialog_articles_csme").dialog({ 
+		autoOpen: false,
+		modal: true,
+		minWidth: 810,
+		maxWidth: 810,
+	});
+*/
 </script>

@@ -1,0 +1,65 @@
+replaceIssueFormWith('<%= escape_javascript(render :partial => 'form') %>');
+
+<% if User.current.allowed_to?(:log_time, @issue.project) %>
+  $('#log_time').show();
+<% else %>
+  $('#log_time').hide();
+<% end %>
+
+// Id del estado.
+status_id = $("#issue_status_id").val();
+
+// Petición para recibir el estado configurado para 'asignado a proveedor'.
+$.ajax({
+	url: "/get_status",
+	type: "GET",
+	success: function(response) { compareStatuses(response, status_id); },
+	error: function(xhr) { console.log(xhr); }
+});
+
+function compareStatuses(data, status_id){
+	// Eliminar los options del select 'assigned_to'
+	removeOptionsAssignedTo();
+
+	if(status_id == data.provider_status){
+		// Recogemos los valores de los campos 'Expediente', 'Cód.Artículo' y 'Cód.Proveedor'.
+		// y se muestran en el modal como valores por defecto.
+		$("#prov_file").val($("#issue_custom_field_values_"+$setting_file_id).val());
+		$("#prov_article").val($("#issue_custom_field_values_"+$setting_article_id).val());
+		$("#prov_provider").val($("#issue_custom_field_values_"+$setting_provider_id).val());
+
+		// Hacemos la busqueda de proveedores por defecto al abrir el modal por primera vez.	
+		if(($("#issue_custom_field_values_"+$setting_file_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_article_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_provider_id).val().length !== 0)){
+			getProvidersAjax();
+		}
+
+		// Se asignada en el campo de 'Asignado a grupo' el valor de 'Servicio Técnico'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() == "Servicio Técnico"){
+				$(this).prop("selected", true);
+			}
+			else{
+				// $(this).prop("disabled", true);
+				$(this).remove();
+			}
+		});
+
+		// Abrimos el modal
+		$("#dialog_providers").dialog("open");
+
+		// Se muestra el botón por si se cierra el modal y se desea volver a abrir.
+		$("#btn_open_dialog_providers").css("display","inline");
+	}
+
+	/*
+	if(status_id == data.analysis_status){
+		$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
+	}
+	*/
+}
+
+// Eliminar los options del select 'assigned_to'
+function removeOptionsAssignedTo(){
+	$("#issue_assigned_to_id option").prop("selected", false);
+	$("#issue_assigned_to_id option").remove();
+}
