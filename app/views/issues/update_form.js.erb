@@ -51,12 +51,94 @@ function compareStatuses(data, status_id){
 		$("#btn_open_dialog_providers").css("display","inline");
 	}
 
-	/*
+	
 	if(status_id == data.analysis_status){
 		$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
 	}
-	*/
+	
 }
+
+	function getProvidersAjax(){
+		// Recogemos los valores de Expediente/Cod.Artículo/Cod.Expediente.
+		cod_file     = $("#prov_file", $("#btn_form_provider").parents("#dialog_providers")).val();
+		cod_article  = $("#prov_article", $("#btn_form_provider").parents("#dialog_providers")).val();
+		cod_provider = $("#prov_provider",$("#btn_form_provider").parents("#dialog_providers")).val();
+
+		// Petición para obtener proveedores de la tabla gg_contacts.
+   		$.ajax({
+			url: "/get_providers",
+			type: "GET",
+			data: { cod_file: cod_file, cod_article: cod_article, cod_provider: cod_provider },
+			success: function(response) { getProviders(response); },
+			error: function(xhr) { console.log(xhr); }
+		});
+	}
+
+	// Busqueda de los proveedores cuando se realiza la busqueda.
+	$(document).on("click", "#btn_form_provider", function(){
+		getProvidersAjax();
+	});
+
+	function getProviders(data){
+		$content_providers = "";
+		// Eliminamos el mensaje de error de si no hay contactos en el caso de que se encuentre.
+		$(".contact_not_found").remove();
+		// Para mostrar el texto donde indica el número de proveedores encontrados.
+		$(".cursive_length").remove();
+		$(".div_btn_provider").append("<i class='cursive_length'>Encontrado(s) "+ data.providers.length +" proveedor(es).</i>");
+		
+		// Contenedor donde se mostrara los resultados de proveedores obtenidos.
+		$(".container_providers").remove();
+		$content_providers += "<div class='container_providers'>\n";
+		if(data.providers.length > 0 ){
+			$content_providers += "<table class='list'>";
+			$content_providers += "<thead><tr><th></th><th>Expediente</th><th>Cod.Artículo</th><th>Nombre Proveedor</th><th>Cod.Proveedor</th><th>Fecha Garantía</th></tr></thead>";
+			$content_providers += "<tbody>"
+
+			for(var i=0; i<data.providers.length; i++){
+				getCodeFile(data.providers[i].gg_article.id, i);
+
+				$content_providers += "<tr>";
+				$content_providers += "<td><input type='radio' name='provider_id' value='"+data.providers[i].gg_article.id+"'/></td>\n";	
+				$content_providers += "<td class='tr_code_file_"+i+"'></td>";
+				$content_providers += "<td>"+data.providers[i].gg_article.code_article+"</td>";
+				$content_providers += "<td>"+data.providers[i].gg_article.code_provider+"</td>";
+				$content_providers += "<td>"+data.providers[i].gg_article.name_provider+"</td>";
+
+				if(data.providers[i].gg_article.guarantee_end == null){
+					$content_providers += "<td><center>-<center></td>"
+				}else{
+			 		gg_article_guarantee = data.providers[i].gg_article.guarantee_end;
+			 		gg_article_guarantee = new Date(gg_article_guarantee.split("-")[0], gg_article_guarantee.split("-")[1]-1,gg_article_guarantee.split("-")[2]);
+		 			if(dateToday > gg_article_guarantee){
+						$content_providers += "<td class='guarantee_end_out'>"+data.providers[i].gg_article.guarantee_end+"</td>";
+					}else{
+						$content_providers += "<td>"+data.providers[i].gg_article.guarantee_end+"</td>";
+					}
+				}
+				
+				$content_providers += "</tr>";
+			}
+
+			$content_providers += "</tbody>";
+			$content_providers += "</table>";
+		 	$content_providers += "<button type='submit' id='btn_container_providers' name='btn_providers'> Aceptar </button>";
+		}
+		$content_providers += "</div>\n";
+
+		$(".hr_form_provider_last").after($content_providers);
+	}
+
+	function getCodeFile(id, i){
+		// Petición para obtener el codigo del expediente.
+   		$.ajax({
+			url: "/get_code_file",
+			type: "GET",
+			data: { file_id: id },
+			success: function(response) { $(".tr_code_file_"+i).append(response.code_file);	},
+			error: function(xhr) { console.log(xhr); }
+		});
+	}
 
 // Eliminar los options del select 'assigned_to'
 function removeOptionsAssignedTo(){

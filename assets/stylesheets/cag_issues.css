@@ -21,41 +21,39 @@
 	margin-bottom: 25px;
 }
 
-/* CSS Style para cuando la petición pasa al estado 'Asignado a proveedor' / Modal */
-/* ------------------------------------------------------------------------------- */
-
 .cursive_length{
 	margin-left: 15px !important; 
 }
 
-
-.container_providers{
-	margin-top: 10px;
+.contact_not_found, .article_not_found{
+    color: #FF0000;
+	margin-left: 15px;
 }
 
-.container_providers > input {
+.container_providers > input, .container_articles > input {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
 
-#btn_container_providers{
+
+#btn_container_providers, #btn_container_articles_csme{
 	width: 75px;
 	margin-top: 5px;
 	margin-left: 75px;
+}
+/* CSS Style para cuando la petición pasa al estado 'Asignado a proveedor' / Modal */
+/* ------------------------------------------------------------------------------- */
+
+.container_providers{
+	margin-top: 10px;
 }
 
 .length_contacts{
 	margin: 5px;
 }
 
-.contact_not_found{
-    color: #FF0000;
-	margin-left: 15px;
-
-}
-
 .guarantee_end_out{
-	background-color: rgba(255,0,0,0.8);
+	color: rgba(255,0,0,0.8);
 	font-weight: bold;
 }
 
@@ -63,13 +61,21 @@
 	font-weight: bold;
 }
 
-/* CSS Style para cuando la petición pasa al estado 'Asignado a proveedor */
-/* ---------------------------------------------------------------------- */
-
-
 /* CSS Style para la sección de configuración del plugin.                 */
 /* ---------------------------------------------------------------------- */
 
 .config_select_status{
-	padding-left: 0px !important;
+	width: 325px; 
+	float: left; 
+	padding: 0px !important;
+	margin-right: 15px; 
+	text-align: left;
+}
+
+.config_label_fields_csme{
+	width: 140px; 
+	float: left; 
+	padding: 0px !important;
+	margin-right: 15px; 
+	text-align: left;
 }

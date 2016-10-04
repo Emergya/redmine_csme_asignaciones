@@ -4,49 +4,96 @@
 
 <fieldset>
 	<legend><b>Configuración de estados</b></legend>
-		<p class='config_select_status'>Estado de la petición para <i>'Asignado a proveedor'</i>: &nbsp;
+		<p class='config_select_status'>Estado de la petición para <i>'Asignado a proveedor'</i>:</p>
 		<%= select_tag 'settings[provider_status]',
 			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['provider_status']),
 			:include_blank => true
-		%></p>
+		%>
+		<br>
 		
-		<!--
-		<p class='config_select_status'>Estado de la petición para <i>'Análisis de información CSME'</i>: &nbsp;
-		<%#= select_tag 'settings[analysis_status]',
+		<p class='config_select_status'>Estado de la petición para <i>'Análisis de información CSME'</i>:</p>
+		<%= select_tag 'settings[analysis_status]',
 			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['analysis_status']),
 			:include_blank => true
-		%></p>
-		-->
-</fieldset>
-<br>
+		%>
+</fieldset><br>
+
+<fieldset>
+	<legend><b>Campos personalizados para 'Detalles de Centro'</b></legend>
+	<p class='config_label_fields_csme'>Código de centro:</p>
+		<%= select_tag 'settings[setting_issue_code_center]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_code_center']),
+			:include_blank => true
+		%>
+</fieldset><br>
 
 <fieldset>
 	<legend><b>Campos personalizados para 'Detalles del Artículo - CSME'</b></legend>
-		Código de expediente: &nbsp;
+		<p class='config_label_fields_csme'>Código de artículo:</p>
+		<%= select_tag 'settings[setting_issue_article]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_article']),
+			:include_blank => true
+		%>
+		<br>	
+
+		<p class='config_label_fields_csme'>Nombre del artículo:</p>
+		<%= select_tag 'settings[setting_issue_article_name]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_article_name']),
+			:include_blank => true
+		%>
+		<br>	
+
+		<p class='config_label_fields_csme'>Código de proveedor:</p>
+		<%= select_tag 'settings[setting_issue_provider]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_provider']),
+			:include_blank => true
+		%>
+		<br>
+
+		<p class='config_label_fields_csme'>Nombre del proveedor:</p>
+		<%= select_tag 'settings[setting_issue_provider_name]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_provider_name']),
+			:include_blank => true
+		%>
+		<br>	
+
+		<p class='config_label_fields_csme'>Código de expediente:</p>
 		<%= select_tag 'settings[setting_issue_file]',
 			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_file']),
 			:include_blank => true
 		%>
 		<br>
 
-		Código de artículo: &nbsp;
-		<%= select_tag 'settings[setting_issue_article]',
-			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_article']),
-			:include_blank => true
-		%>
-		<br>		
-		
-		Código de proveedor: &nbsp;
-		<%= select_tag 'settings[setting_issue_provider]',
-			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_provider']),
+		<p class='config_label_fields_csme'>Tipo de artículo:</p>
+		<%= select_tag 'settings[setting_issue_article_type]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_article_type']),
 			:include_blank => true
 		%>
 		<br>
-		<!--
-		Número de serie: &nbsp;
-		<%#= select_tag 'settings[setting_issue_serial_number]',
+
+		<p class='config_label_fields_csme'>Número de serie:</p>
+		<%= select_tag 'settings[setting_issue_serial_number]',
 			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_serial_number']),
 			:include_blank => true
 		%>
-		-->
+		<br>
+
+		<p class='config_label_fields_csme'>Fecha de garantía:</p>
+		<%= select_tag 'settings[setting_issue_date_guarantee]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_date_guarantee']),
+			:include_blank => true
+		%><br>
+
+		<p class='config_label_fields_csme'>Expediente de garantía:</p>
+		<%= select_tag 'settings[setting_issue_file_guarantee]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_file_guarantee']),
+			:include_blank => true
+		%><br>
+
+		<p class='config_label_fields_csme'>Lote:</p>
+		<%= select_tag 'settings[setting_issue_lot]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_lot']),
+			:include_blank => true
+		%>
+
 </fieldset>

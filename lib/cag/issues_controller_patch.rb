@@ -11,7 +11,7 @@ module CAG
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
 		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update, :create]
-		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme]
+		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme, :get_article_csme]
 		  	end
 		end
 
@@ -114,9 +114,31 @@ module CAG
 		    	end
 		    end
 
-		    # def get_articles_csme
-		    	
-		    # end
+		    def get_articles_csme
+				query_article = ""
+				query_params = ""
+				
+				params[:article_csme].each_with_index do |prop_article, index|
+					if !prop_article[1].empty?
+						query_article << "#{prop_article[0]} LIKE '%#{prop_article[1]}%' AND "
+					end	
+				end
+
+				query_article.chomp!(" AND ")
+				articles_csme = GgMaterial.where(query_article)
+				
+				respond_to do |format|
+		    		format.json { render json: {:articles_csme => articles_csme} }
+		    	end	    	
+		    end
+
+		    def get_article_csme
+		    	article_csme = GgMaterial.find(params[:article_csme_id])
+
+		    	respond_to do |format|
+		    		format.json { render json: {:article_csme => article_csme.present? ? article_csme.attributes : nil} }
+		    	end
+		    end
 		end
 	end
 end

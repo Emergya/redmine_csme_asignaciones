@@ -28,16 +28,18 @@
 </div>
 
 <!-- DIALOG 'Busqueda de artículos' -->
-<!--
 <div id="dialog_articles_csme" title="Busqueda de articulos">
 	<p>Por favor, introduce la información para realizar la busqueda:</p>
 
 	<hr class="hr_form_dialog"><br>
 	<div class='form_dialog_label'><b>Código de centro:</b></div>
-	<div><input type="text" id="article_cod_center" name="center"/></div>
+	<div><input type="text" id="article_cod_center" name="center" disabled/></div>
 
 	<div class='form_dialog_label'><b>Código de artículo:</b></div>
-	<div><input type="text" id="article_cod_article" name="article"/></div>
+	<div>
+		<input type="text" id="article_cod_article" name="article" placeholder="Código"/> / 
+		<input type="text" id="article_type_article" name="type_article" placeholder="Tipo"/>
+	</div>
 
 	<div class='form_dialog_label'><b>Código de expediente:</b></div>
 	<div><input type="text" id="article_cod_file" name="file"/></div>
@@ -45,15 +47,32 @@
 	<div class='form_dialog_label'><b>Código adjudicatario:</b></div>
 	<div><input type="text" id="article_cod_adj" name="adj"/></div>
 
+	<div class='form_dialog_label'><b>Número de serie:</b></div>
+	<div><input type="text" id="article_serial_number" name="serial_number"/></div>
+
 	<br><hr class="hr_form_dialog">
 	<div class="div_btn_article"><button type="submit" id="btn_form_article_csme">Busqueda</button></div>
 	<hr class="hr_form_article_last">
 </div>
--->
+
 <script>
-	$setting_file_id     = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_file] %>;
-	$setting_article_id  = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_article] %>;
-	$setting_provider_id = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider] %>;
+	// Id del estado
+	$id_issue_status = <%= Setting.plugin_redmine_csme_asignaciones[:analysis_status] %>;
+
+	// Detalles de Centro
+	$setting_code_center     = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_code_center] %>;    // Código de Centro
+
+	// Detalles del artículo CSMe
+	$setting_article_id     = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_article] %>;        // Código Art. (csme)
+	$setting_article_name   = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_article_name] %>;   // Nombre Art (csme)
+	$setting_provider_id    = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider] %>;       // Código Prov. (csme)
+	$setting_provider_name  = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider_name] %>;  // Nombre Prov. (csme)
+	$setting_file_id        = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_file] %>;           // Expediente (csme)
+	$setting_article_type   = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_article_type] %>;   // Tipo Art. (csme)
+	$setting_serial_number  = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_serial_number] %>;  // Nº Serie (csme)
+	$setting_date_guarantee = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_date_guarantee] %>; // Fecha Garantía (csme)
+	$setting_file_guarantee = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_file_guarantee] %>; // Expediente Garantía (csme)
+	$setting_lot            = <%= Setting.plugin_redmine_csme_asignaciones[:setting_issue_lot] %>;            // Lote (csme)
 
 	// Inicialización de la ventana modal dialog de 'providers'.
 	$("#dialog_providers").dialog({ 
@@ -63,13 +82,11 @@
 		maxWidth: 810,
 	});
 
-/*
 	// Inicialización de la ventana modal dialog 'articles'.
 	$("#dialog_articles_csme").dialog({ 
 		autoOpen: false,
 		modal: true,
-		minWidth: 810,
-		maxWidth: 810,
+		minWidth: 1210,
+		maxWidth: 1210,
 	});
-*/
 </script>
