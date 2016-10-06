@@ -17,6 +17,8 @@ module CAG
 
         safe_attributes 'group_id',
           :if => lambda {|issue, user| issue.new_statuses_allowed_to(user).any? }
+
+          after_update :check_article_csme_into_gg_article
       end
     end
 
@@ -24,6 +26,33 @@ module CAG
     end
 
     module InstanceMethods
+
+      def check_article_csme_into_gg_article
+        # Comprobamos que se realice la validación en 'Análisis de información CSME'
+        if IssueStatus.find(self.status_id).id == Setting.plugin_redmine_csme_asignaciones[:analysis_status].to_i
+            # Guardamos los custom_values para validarlos.
+            # Redmine por defecto no actualiza los campos personalizados, sino que los elimina y los crea de nuevo,
+            # por lo que no es posible validar dichos campos si no se guardan a través del método save_custom_field_values.
+            # ya que los campos personalizados no se guardan hasta que llega al callback de after_save (posterior a after_update).
+            self.save_custom_field_values
+
+            # Se obtiene los valores de los campos personalizados por los cuales se realizará la busqueda en gg_articles.
+            code_article       = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_article]).first.value
+            code_type_material = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_article_type]).first.value
+            code_provider      = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider]).first.value
+            code_file          = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_file]).first.value
+
+            file = GgFile.where("code_file = ?", code_file).first
+            articles = file.gg_articles.where("code_article = ? AND code_type_material = ? AND code_provider = ?", code_article, code_type_material, code_provider).count
+          
+            # Si no existe ningún artículo se realiza un rollback.
+            if articles == 0
+              errors.add :base, l(:no_matches_articles_csme)
+              raise ActiveRecord::Rollback
+            end
+        end
+      end
+
     end
 
   end
