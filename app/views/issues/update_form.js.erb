@@ -92,7 +92,7 @@ function compareStatuses(data, status_id){
 		$content_providers += "<div class='container_providers'>\n";
 		if(data.providers.length > 0 ){
 			$content_providers += "<table class='list'>";
-			$content_providers += "<thead><tr><th></th><th>Expediente</th><th>Cod.Artículo</th><th>Nombre Proveedor</th><th>Cod.Proveedor</th><th>Fecha Garantía</th></tr></thead>";
+			$content_providers += "<thead><tr><th></th><th>Expediente</th><th>Cod.Artículo</th><th>Nombre Proveedor</th><th>Cod.Proveedor</th></tr></thead>";
 			$content_providers += "<tbody>"
 
 			for(var i=0; i<data.providers.length; i++){
@@ -102,21 +102,8 @@ function compareStatuses(data, status_id){
 				$content_providers += "<td><input type='radio' name='provider_id' value='"+data.providers[i].gg_article.id+"'/></td>\n";	
 				$content_providers += "<td class='tr_code_file_"+i+"'></td>";
 				$content_providers += "<td>"+data.providers[i].gg_article.code_article+"</td>";
+				$content_providers += "<td>"+data.providers[i].gg_article.name_provider+"</td>";				
 				$content_providers += "<td>"+data.providers[i].gg_article.code_provider+"</td>";
-				$content_providers += "<td>"+data.providers[i].gg_article.name_provider+"</td>";
-
-				if(data.providers[i].gg_article.guarantee_end == null){
-					$content_providers += "<td><center>-<center></td>"
-				}else{
-			 		gg_article_guarantee = data.providers[i].gg_article.guarantee_end;
-			 		gg_article_guarantee = new Date(gg_article_guarantee.split("-")[0], gg_article_guarantee.split("-")[1]-1,gg_article_guarantee.split("-")[2]);
-		 			if(dateToday > gg_article_guarantee){
-						$content_providers += "<td class='guarantee_end_out'>"+data.providers[i].gg_article.guarantee_end+"</td>";
-					}else{
-						$content_providers += "<td>"+data.providers[i].gg_article.guarantee_end+"</td>";
-					}
-				}
-				
 				$content_providers += "</tr>";
 			}
 
