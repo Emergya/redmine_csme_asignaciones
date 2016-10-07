@@ -125,7 +125,7 @@ module CAG
 				end
 
 				query_article.chomp!(" AND ")
-				articles_csme = GgMaterial.where(query_article)
+				articles_csme = GgMaterial.where(query_article).order("date_guarantee DESC")
 				
 				respond_to do |format|
 		    		format.json { render json: {:articles_csme => articles_csme} }
