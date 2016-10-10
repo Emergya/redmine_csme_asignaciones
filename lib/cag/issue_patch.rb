@@ -43,13 +43,19 @@ module CAG
             code_file          = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_file]).first.value
 
             file = GgFile.where("code_file = ?", code_file).first
-            articles = file.gg_articles.where("code_article = ? AND code_type_material = ? AND code_provider = ?", code_article, code_type_material, code_provider).count
-          
-            # Si no existe ningún artículo se realiza un rollback.
-            if articles == 0
-              errors.add :base, l(:no_matches_articles_csme)
+            # Si no existe ningún expediente se realiza un rollback.
+            if file.nil?
+              errors.add :base, l(:no_matches_files_csme)
               raise ActiveRecord::Rollback
+            else
+              articles = file.gg_articles.where("code_article = ? AND code_type_material = ? AND code_provider = ?", code_article, code_type_material, code_provider).count
+              # Si no existe ningún artículo se realiza un rollback.
+              if articles == 0
+                errors.add :base, l(:no_matches_articles_csme)
+                raise ActiveRecord::Rollback
+              end
             end
+
         end
       end
 

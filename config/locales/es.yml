@@ -3,4 +3,5 @@ es:
     field_group_id: Asignado a grupo
     thecnical_service: "Servicio Técnico"
     group_details_article_csme: "Detalles del Artículo - CSME"
+    no_matches_files_csme: "No existe ningún expediente con los valores introducidos en la agrupación 'Detalles del Artículo - CSME'."
     no_matches_articles_csme: "No existe ningún artículo con los valores introducidos en la agrupación 'Detalles del Artículo - CSME'."
