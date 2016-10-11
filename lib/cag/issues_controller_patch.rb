@@ -11,7 +11,7 @@ module CAG
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
 		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update, :create]
-		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme, :get_article_csme]
+		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme, :get_article_csme, :get_files_services_csme, :get_file_service_csme]
 		  	end
 		end
 
@@ -46,7 +46,7 @@ module CAG
 			    end
 		    end
 
-		    # Devuelve en formato .json los estados configurados en el plugin
+		    # Devuelve en formato .json los estados configurados en el plugin.
 		    def get_status
 		    	provider_status = Setting.plugin_redmine_csme_asignaciones[:provider_status]
 		    	analysis_status = Setting.plugin_redmine_csme_asignaciones[:analysis_status]
@@ -56,7 +56,7 @@ module CAG
 		    	end
 		    end
 
-		    # Devuelve en formato .json el listado de los proveedores
+		    # Devuelve en formato .json el listado de los proveedores.
 		    def get_providers
 		    	cod_file     = params[:cod_file]
 		    	cod_article  = params[:cod_article]
@@ -94,7 +94,7 @@ module CAG
 		    	end
 		    end
 
-		    # Devuelve en formato.json el codigo del expediente
+		    # Devuelve en formato.json el codigo del expediente.
 		    def get_code_file
 		    	article = GgArticle.find params[:file_id]
 		    	file = GgFile.select("code_file").find(article.gg_file_id)
@@ -104,7 +104,7 @@ module CAG
 		    	end
 		    end
 
-		    # Devuelve en formato .json el contacto de nivel 1 del proveedor
+		    # Devuelve en formato .json el contacto de nivel 1 del proveedor.
 		    def get_provider_contact
 		    	article = GgArticle.find(params[:provider_id])
 		    	contact = article.level_1.present? ? User.find(article.level_1) : nil
@@ -114,6 +114,7 @@ module CAG
 		    	end
 		    end
 
+		    # Devuelve en formato .json los articulos de gg_materials.
 		    def get_articles_csme
 				query_article = ""
 				query_params = ""
@@ -132,11 +133,30 @@ module CAG
 		    	end	    	
 		    end
 
+		    # Devuelve en formato .json el articulo de gg_materials.
 		    def get_article_csme
 		    	article_csme = GgMaterial.find(params[:article_csme_id])
 
 		    	respond_to do |format|
 		    		format.json { render json: {:article_csme => article_csme.present? ? article_csme.attributes : nil} }
+		    	end
+		    end
+
+		    # Devuelve en formato .json los expedientes de servicios de gg_files_services.
+		    def get_files_services_csme
+		    	files_services_csme =  GgFilesService.where("code_file LIKE '%#{params[:code_file]}%'").order("date_guarantee DESC")
+
+		    	respond_to do |format|
+		    		format.json { render json: {:files_services_csme => files_services_csme} }
+		    	end
+		    end
+
+		    # Devuelve en formato .json el expediente de servicios de gg_files_services.
+		    def get_file_service_csme
+		    	file_service_csme =  GgFilesService.find(params[:file_service_csme_id])
+
+		    	respond_to do |format|
+		    		format.json { render json: {:files_services_csme => file_service_csme.present? ? file_service_csme.attributes : nil} }
 		    	end
 		    end
 		end

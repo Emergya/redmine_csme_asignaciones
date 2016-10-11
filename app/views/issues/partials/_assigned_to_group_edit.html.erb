@@ -55,6 +55,20 @@
 	<hr class="hr_form_article_last">
 </div>
 
+<!-- DIALOG 'Busqueda de expedientes asociados al contrato de mantenimiento' -->
+<div id="dialog_files_services_csme" title="Busqueda de articulos">
+	<p>Por favor, introduce la información para realizar la busqueda:</p>
+
+	<hr class="hr_form_dialog"><br>
+
+	<div class='form_dialog_label'><b>Expediente:</b></div>
+	<div><input type="text" id="service_code_file" name="file"/></div>
+
+	<br><hr class="hr_form_dialog">
+	<div class="div_btn_file_service"><button type="submit" id="btn_form_file_service_csme">Busqueda</button></div>
+	<hr class="hr_form_file_service_last">
+</div>
+
 <script>
 	// Id del estado
 	$id_issue_status = <%= Setting.plugin_redmine_csme_asignaciones[:analysis_status] %>;
@@ -84,6 +98,14 @@
 
 	// Inicialización de la ventana modal dialog 'articles'.
 	$("#dialog_articles_csme").dialog({ 
+		autoOpen: false,
+		modal: true,
+		minWidth: 1210,
+		maxWidth: 1210,
+	});
+
+	// Inicialización de la ventana modal dialog 'files_services'.
+	$("#dialog_files_services_csme").dialog({ 
 		autoOpen: false,
 		modal: true,
 		minWidth: 1210,

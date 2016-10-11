@@ -13,11 +13,11 @@
 	text-align: right;
 }
 
-.div_btn_provider, .div_btn_article{
+.div_btn_provider, .div_btn_article, .div_btn_file_service{
 	margin-left: 75px !important;
 }
 
-.hr_form_provider_last, .hr_form_article_last{
+.hr_form_provider_last, .hr_form_article_last, .hr_form_file_service_last{
 	margin-bottom: 25px;
 }
 
@@ -25,7 +25,7 @@
 	margin-left: 15px !important; 
 }
 
-.contact_not_found, .article_not_found{
+.contact_not_found, .article_not_found, .file_service_not_found{
     color: #FF0000;
 	margin-left: 15px;
 }
@@ -36,11 +36,12 @@
 }
 
 
-#btn_container_providers, #btn_container_articles_csme{
+#btn_container_providers, #btn_container_articles_csme, #btn_container_files_services_csme{
 	width: 75px;
 	margin-top: 5px;
 	margin-left: 75px;
 }
+
 /* CSS Style para cuando la petición pasa al estado 'Asignado a proveedor' / Modal */
 /* ------------------------------------------------------------------------------- */
 

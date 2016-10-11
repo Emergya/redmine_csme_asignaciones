@@ -28,143 +28,6 @@ $(document).ready(function(){
 		}
 	}
 
-	// En el caso de que se modifica el estado de la petición.
-	// $(document).on('change', '#issue_status_id', function() {
-	// 	// Id del estado.
-	// 	status_id = $(this).val();
-
-	// 	// Petición para recibir el estado configurado para 'asignado a proveedor'.
-	// 	$.ajax({
-	// 		url: "/get_status",
-	// 		type: "GET",
-	// 		success: function(response) { compareStatuses(response, status_id); },
-	// 		error: function(xhr) { console.log(xhr); }
-	// 	});
-	// });
-
-	// function compareStatuses(data, status_id){
-	// 	// Eliminar los options del select 'assigned_to'
-	// 	removeOptionsAssignedTo();
-
-	// 	if(status_id == data.provider_status){
-	// 		// Recogemos los valores de los campos 'Expediente', 'Cód.Artículo' y 'Cód.Proveedor'.
-	// 		// y se muestran en el modal como valores por defecto.
-	// 		$("#prov_file").val($("#issue_custom_field_values_"+$setting_file_id).val());
-	// 		$("#prov_article").val($("#issue_custom_field_values_"+$setting_article_id).val());
-	// 		$("#prov_provider").val($("#issue_custom_field_values_"+$setting_provider_id).val());
-
-	// 		// Hacemos la busqueda de proveedores por defecto al abrir el modal por primera vez.	
-	// 		if(($("#issue_custom_field_values_"+$setting_file_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_article_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_provider_id).val().length !== 0)){
-	// 			getProvidersAjax();
-	// 		}
-
-	// 		// Se asignada en el campo de 'Asignado a grupo' el valor de 'Servicio Técnico'
-	// 		$("#issue_group_id option").each(function(){
-	// 			if($(this).text() == "Servicio Técnico"){
-	// 				$(this).prop("selected", true);
-	// 			}
-	// 			else{
-	// 				// $(this).prop("disabled", true);
-	// 				$(this).remove();
-	// 			}
-	// 		});
-
-	// 		// Abrimos el modal
-	// 		$("#dialog_providers").dialog("open");
-
-	// 		// Se muestra el botón por si se cierra el modal y se desea volver a abrir.
-	// 		$("#btn_open_dialog_providers").css("display","inline");
-	// 	}
-
-	// 	/*
-	// 	if(status_id == data.analysis_status){
-	// 		$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
-	// 	}
-	// 	*/
-	// }
-
-	// function getProvidersAjax(){
-	// 	// Recogemos los valores de Expediente/Cod.Artículo/Cod.Expediente.
-	// 	cod_file     = $("#prov_file", $("#btn_form_provider").parents("#dialog_providers")).val();
-	// 	cod_article  = $("#prov_article", $("#btn_form_provider").parents("#dialog_providers")).val();
-	// 	cod_provider = $("#prov_provider",$("#btn_form_provider").parents("#dialog_providers")).val();
-
-	// 	// Petición para obtener proveedores de la tabla gg_contacts.
- //   		$.ajax({
-	// 		url: "/get_providers",
-	// 		type: "GET",
-	// 		data: { cod_file: cod_file, cod_article: cod_article, cod_provider: cod_provider },
-	// 		success: function(response) { getProviders(response); },
-	// 		error: function(xhr) { console.log(xhr); }
-	// 	});
-	// }
-
-	// // Busqueda de los proveedores cuando se realiza la busqueda.
-	// $(document).on("click", "#btn_form_provider", function(){
-	// 	getProvidersAjax();
-	// });
-
-	// function getProviders(data){
-	// 	$content_providers = "";
-	// 	// Eliminamos el mensaje de error de si no hay contactos en el caso de que se encuentre.
-	// 	$(".contact_not_found").remove();
-	// 	// Para mostrar el texto donde indica el número de proveedores encontrados.
-	// 	$(".cursive_length").remove();
-	// 	$(".div_btn_provider").append("<i class='cursive_length'>Encontrado(s) "+ data.providers.length +" proveedor(es).</i>");
-		
-	// 	// Contenedor donde se mostrara los resultados de proveedores obtenidos.
-	// 	$(".container_providers").remove();
-	// 	$content_providers += "<div class='container_providers'>\n";
-	// 	if(data.providers.length > 0 ){
-	// 		$content_providers += "<table class='list'>";
-	// 		$content_providers += "<thead><tr><th></th><th>Expediente</th><th>Cod.Artículo</th><th>Fecha Garantía</th><th>Cod.Proveedor</th><th>Nombre Proveedor</th></tr></thead>";
-	// 		$content_providers += "<tbody>"
-
-	// 		for(var i=0; i<data.providers.length; i++){
-	// 			getCodeFile(data.providers[i].gg_article.id, i);
-
-	// 			$content_providers += "<tr>";
-	// 			$content_providers += "<td><input type='radio' name='provider_id' value='"+data.providers[i].gg_article.id+"'/></td>\n";	
-	// 			$content_providers += "<td class='tr_code_file_"+i+"'></td>";
-	// 			$content_providers += "<td>"+data.providers[i].gg_article.code_article+"</td>";
-
-	// 			if(data.providers[i].gg_article.guarantee_end == null){
-	// 				$content_providers += "<td><center>-<center></td>"
-	// 			}else{
-	// 		 		gg_article_guarantee = data.providers[i].gg_article.guarantee_end;
-	// 		 		gg_article_guarantee = new Date(gg_article_guarantee.split("-")[0], gg_article_guarantee.split("-")[1]-1,gg_article_guarantee.split("-")[2])
-	// 	 			if(dateToday > gg_article_guarantee){
-	// 					$content_providers += "<td class='guarantee_end_out'>"+data.providers[i].gg_article.guarantee_end+"</td>";
-	// 				}else{
-	// 					$content_providers += "<td>"+data.providers[i].gg_article.guarantee_end+"</td>";
-	// 				}
-	// 			}
-
-	// 			$content_providers += "<td>"+data.providers[i].gg_article.code_provider+"</td>";
-	// 			$content_providers += "<td>"+data.providers[i].gg_article.name_provider+"</td>";
-	// 			$content_providers += "</tr>";
-	// 		}
-
-	// 		$content_providers += "</tbody>";
-	// 		$content_providers += "</table>";
-	// 	 	$content_providers += "<button type='submit' id='btn_container_providers' name='btn_providers'> Aceptar </button>";
-	// 	}
-	// 	$content_providers += "</div>\n";
-
-	// 	$(".hr_form_provider_last").after($content_providers);
-	// }
-
-	// function getCodeFile(id, i){
-	// 	// Petición para obtener el codigo del expediente.
- //   		$.ajax({
-	// 		url: "/get_code_file",
-	// 		type: "GET",
-	// 		data: { file_id: id },
-	// 		success: function(response) { $(".tr_code_file_"+i).append(response.code_file);	},
-	// 		error: function(xhr) { console.log(xhr); }
-	// 	});
-	// }
-
 	$(document).on("click", "#btn_container_providers", function(){
 		// Comprobación de que se haya seleccionado al uno de los proveedores indicados en la lista.
 		if($("input[type='radio'][name='provider_id']:checked").val()){
@@ -206,7 +69,6 @@ $(document).ready(function(){
 
 			// Cerramos el dialog.
 			$("#dialog_providers").dialog("destroy");
-
 		}
 	}
 
@@ -233,6 +95,9 @@ $(document).ready(function(){
 	// FUNCIONALIDAD PARA CUANDO UNA PETICIÓN PASA AL ESTADO 'ANÁLISIS DE INFORMACIÓN'
 	//--------------------------------------------------------------------------------
 	
+	// 1. BÚSQUEDA DEL ARTÍCULO EN ISE_MATERIAL_DISTRIBUIDO
+	// ----------------------------------------------------
+
 	// Abrir el modal para la busqueda del articulo.
 	$(document).on("click", "[id = 'Detalles del Artículo - CSME']", function(){
 		// Recogemos los valores de los campos 'Código de centro', 'Cód.Artículo', 'Tipo de artículo', 'Expediente', y 'Número de serie'.
@@ -268,13 +133,13 @@ $(document).ready(function(){
 
 	function getArticlesCsme(data){
 		$content_articles = "";
-		// Eliminamos el mensaje de error de si no hay contactos en el caso de que se encuentre.
+		// Eliminamos el mensaje de error de si no hay artículos en el caso de que se encuentre.
 		$(".article_not_found").remove();
-		// // Para mostrar el texto donde indica el número de proveedores encontrados.
+		// // Para mostrar el texto donde indica el número de artículos encontrados.
 		$(".cursive_length").remove();
 		$(".div_btn_article").append("<i class='cursive_length'>Encontrado(s) "+ data.articles_csme.length +" articulo(s).</i>");
 		
-		// // Contenedor donde se mostrara los resultados de proveedores obtenidos.
+		// // Contenedor donde se mostrara los resultados de artículos obtenidos.
 		$(".container_articles").remove();
 		$content_articles += "<div class='container_articles'>\n";
 		if(data.articles_csme.length > 0 ){
@@ -327,11 +192,11 @@ $(document).ready(function(){
 	}
 
 	$(document).on("click", "#btn_container_articles_csme", function(){
-		// Comprobación de que se haya seleccionado al uno de los proveedores indicados en la lista.
+		// Comprobación de que se haya seleccionado uno de los artículos mostrados en la lista.
 		if($("input[type='radio'][name='article_csme_id']:checked").val()){
 		 	article_csme_id = $("input[type='radio'][name='article_csme_id']:checked").val();
 
-		 	// Petición para obtener el contacto del proveedor.
+		 	// Petición para obtener el artículo.
 	    		$.ajax({
 		 		url: "/get_article_csme",
 		 		type: "GET",
@@ -340,7 +205,7 @@ $(document).ready(function(){
 		 		error: function(xhr) { console.log(xhr); }
 		 	});
 		} else {
-		 	// Mostramos un mensaje de error indicando que debe seleccionar un proveedor.
+		 	// Mostramos un mensaje de error indicando que debe seleccionar un artículo.
 		 	$(".container_articles").append("<i class='article_not_found'>Debe seleccionar un artículo.</i>");	
 		 	// Desactivamos botón de aceptar.
 		 	$("#btn_container_articles_csme").attr("disabled", true);	
@@ -368,5 +233,119 @@ $(document).ready(function(){
 	// Añadir el botón por defecto en el caso de que el estado se encuentre previamente en 'Análisis de información CSMe'
 	if($("#issue_status_id").val() == $id_issue_status){
 		$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
+		$("#issue_custom_field_values_"+$setting_file_guarantee).after("<img id='btn_open_dialog_files_services' src='/images/add.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
+	}
+
+	// 2. BÚSQUEDA DEL EXPEDIENTE DE SERVICIO PARA LA NUEVA FECHA DE GARANTÍA
+	// ----------------------------------------------------------------------
+
+	$(document).on("click", "#btn_open_dialog_files_services", function(){
+		// Abrimos el modal de expedientes que van a estar asociados al contrato de mantenimiento.
+		// Recogemos los valores de los campos 'Expediente Garantía (csme)' y se muestran en el modal como valores por defecto.
+		$("#service_code_file").val($("#issue_custom_field_values_"+$setting_file_guarantee).val());
+
+		// Abrimos el modal
+		$("#dialog_files_services_csme").dialog("open");
+	});
+
+	// Busqueda de los expedientes cuando se realiza la busqueda.
+	$(document).on("click", "#btn_form_file_service_csme", function(){
+		code_file = $("#service_code_file", $("#btn_form_file_service_csme").parents("#dialog_files_services_csme")).val();
+
+		// Petición para obtener los expedientes.
+   		$.ajax({
+			url: "/get_files_services_csme",
+			type: "GET",
+			data: { code_file: code_file },
+			success: function(response) { getFilesServicesCsme(response); },
+			error: function(xhr) { console.log(xhr); }
+		});
+	});
+
+	function getFilesServicesCsme(data){
+		$content_files_services = "";
+		// Eliminamos el mensaje de error de si no hay expedientes en el caso de que se encuentre.
+		$(".article_not_found").remove();
+		// // Para mostrar el texto donde indica el número de expedientes encontrados.
+		$(".cursive_length").remove();
+		$(".div_btn_file_service").append("<i class='cursive_length'>Encontrado(s) "+ data.files_services_csme.length +" expediente(s).</i>");
+	
+		// // Contenedor donde se mostrara los resultados de los expedientes obtenidos.
+		$(".container_files_services").remove();
+		$content_files_services += "<div class='container_files_services'>\n";
+		if(data.files_services_csme.length > 0 ){
+			$content_files_services += "<table class='list'>";
+			$content_files_services += "<thead><tr><th></th><th>Código Expediente</th><th>Artículo</th><th>Fin de Garantía</th></tr></thead>";
+			 	$content_files_services += "<tbody>"
+			 	dateToday = new Date();
+
+			 	for(var i=0; i<data.files_services_csme.length; i++){
+			 		$content_files_services += "<tr>";
+			 		$content_files_services += "<td><input type='radio' name='file_service_csme_id' value='"+data.files_services_csme[i].gg_files_service.id+"'/></td>\n";
+			 		
+			 		if(data.files_services_csme[i].gg_files_service.code_file_services == null){
+						$content_files_services += "<td><center>-</center></td>";
+			 		}else{
+			 			$content_files_services += "<td>"+data.files_services_csme[i].gg_files_service.code_file_services+"</td>";
+			 		}
+
+			 		$content_files_services += "<td>"+data.files_services_csme[i].gg_files_service.name_article+"</td>";
+			 		
+			 		if(data.files_services_csme[i].gg_files_service.date_guarantee == null ){
+			 			$content_files_services += "<td><center>-</center></td>";
+			 		}else{
+			 			article_guarantee = data.files_services_csme[i].gg_files_service.date_guarantee;
+		 				article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
+			 			
+			 			if(dateToday > article_guarantee){
+			 				$content_files_services += "<td class='guarantee_end_out'>"+data.files_services_csme[i].gg_files_service.date_guarantee+"</td>"
+			 			}else{
+			 				$content_files_services += "<td>"+data.files_services_csme[i].gg_files_service.date_guarantee+"</td>";
+			 			}
+			 		}
+
+			 		$content_files_services += "</tr>";
+			 	}
+
+			 	$content_files_services += "</tbody>";
+			$content_files_services += "</table>";
+			$content_files_services += "<button type='submit' id='btn_container_files_services_csme' name='btn_files_services_csme'> Aceptar </button>";
+		}
+
+		$content_files_services += "</div>\n";
+
+		$(".hr_form_file_service_last").after($content_files_services);
+	}
+
+	$(document).on("click", "#btn_container_files_services_csme", function(){
+		// Comprobación de que se haya seleccionado uno de los expedientes indicados en la lista.
+		if($("input[type='radio'][name='file_service_csme_id']:checked").val()){
+		 	file_service_csme_id = $("input[type='radio'][name='file_service_csme_id']:checked").val();
+
+		 	// Petición para obtener el expediente.
+	    		$.ajax({
+		 		url: "/get_file_service_csme",
+		 		type: "GET",
+		 		data: { file_service_csme_id: file_service_csme_id },
+		 		success: function(response) { setSelectFileService(response.files_services_csme); },
+		 		error: function(xhr) { console.log(xhr); }
+		 	});
+		} else {
+		 	// Mostramos un mensaje de error indicando que debe seleccionar un expediente.
+		 	$(".container_files_services").append("<i class='file_service_not_found'>Debe seleccionar un expediente.</i>");	
+		 	// Desactivamos botón de aceptar.
+		 	$("#btn_container_files_services_csme").attr("disabled", true);	
+		}
+	});
+
+	function setSelectFileService(file_service_csme){
+		// Asignamos el nuevo valor del 'Expediente Garantía (csme)'
+		$("#issue_custom_field_values_"+$setting_date_guarantee).val(file_service_csme.date_guarantee);
+		
+		// Asignamos el nuevo valor de 'Fecha Garantía (csme)'
+		$("#issue_custom_field_values_"+$setting_file_guarantee).val(file_service_csme.code_file_services);
+		
+		// Cerramos el modal
+		$("#dialog_files_services_csme").dialog("close");
 	}
 });

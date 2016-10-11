@@ -21,4 +21,10 @@ RedmineApp::Application.routes.draw do
 
 	# Ruta para obtener el artículo de la tabla ISE_MATERIAL_DISTRIBUIDO_GAR a través de AJAX
 	get '/get_article_csme', to: 'issues#get_article_csme', as: 'get_article_csme'
+
+	# Ruta para obtener los expedientes asociados al contrato de mantenimiento a través de AJAX
+	get '/get_files_services_csme', to: 'issues#get_files_services_csme', as: 'get_files_services_csme'
+
+	# Ruta para obtener el expediente asociado al contrato de mantenimiento a través de AJAX
+	get '/get_file_service_csme', to: 'issues#get_file_service_csme', as: 'get_file_service_csme'
 end
