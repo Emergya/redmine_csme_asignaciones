@@ -56,6 +56,16 @@ module CAG
               end
             end
 
+            code_file_service = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_file_guarantee]).first.value
+            if !code_file_service.empty?
+              file_service = GgFilesService.where("code_file_services = ?", code_file_service).first
+              #Si no existe ningun expediente con dicho expediente de servicio.
+              if file_service.nil?
+                errors.add :base, l(:no_matches_files_services_csme)
+                raise ActiveRecord::Rollback
+              end
+            end
+
         end
       end
 

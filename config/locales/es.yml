@@ -5,3 +5,4 @@ es:
     group_details_article_csme: "Detalles del Artículo - CSME"
     no_matches_files_csme: "No existe ningún expediente con los valores introducidos en la agrupación 'Detalles del Artículo - CSME'."
     no_matches_articles_csme: "No existe ningún artículo con los valores introducidos en la agrupación 'Detalles del Artículo - CSME'."
+    no_matches_files_services_csme: "No existe ningún expediente con el valor indicado en el campo 'Expediente de Garantía (csme)' en la agrupación 'Detalles del Artículo - CSME'."

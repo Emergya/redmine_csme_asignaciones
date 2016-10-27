@@ -94,6 +94,12 @@
 		<%= select_tag 'settings[setting_issue_lot]',
 			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_lot']),
 			:include_blank => true
+		%><br>
+
+		<p class='config_label_fields_csme'>Estado de garantía:</p>
+		<%= select_tag 'settings[setting_issue_guarantee_status]',
+			options_from_collection_for_select(CustomField.where("type = ?", 'IssueCustomField'), :id, :name, @settings['setting_issue_guarantee_status']),
+			:include_blank => true
 		%>
 
 </fieldset>

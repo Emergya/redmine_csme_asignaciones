@@ -170,10 +170,10 @@ $(document).ready(function(){
 			 			$content_articles += "<td><center>-</center></td>";
 			 		}else{
 			 			article_guarantee = data.articles_csme[i].gg_material.date_guarantee;
-		 				article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
-			 			
-			 			if(dateToday > article_guarantee){
-			 				$content_articles += "<td class='guarantee_end_out'>"+data.articles_csme[i].gg_material.date_guarantee+"</td>"
+		 				article_guarantee_date = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
+
+			 			if(dateToday > article_guarantee_date){
+			 				$content_articles += "<td class='guarantee_end_out'>"+article_guarantee.split("-")[2]+"-"+(article_guarantee.split("-")[1])+"-"+article_guarantee.split("-")[0]+"</td>"
 			 			}else{
 			 				$content_articles += "<td>"+data.articles_csme[i].gg_material.date_guarantee+"</td>";
 			 			}
@@ -220,11 +220,30 @@ $(document).ready(function(){
 		/* Código Prov. (csme)   	  */ $("#issue_custom_field_values_"+$setting_provider_id).val(article_csme.code_provider);
 		/* Nombre Prov. (csme)        */ $("#issue_custom_field_values_"+$setting_provider_name).val(article_csme.provider);
 		/* Expediente (csme)          */ $("#issue_custom_field_values_"+$setting_file_id).val(article_csme.code_file);
-		/* Expediente Garantía (csme) */ $("#issue_custom_field_values_"+$setting_file_guarantee).val(article_csme.code_file);
+		// /* Expediente Garantía (csme) */ $("#issue_custom_field_values_"+$setting_file_guarantee).val(article_csme.code_file);
 		/* Tipo Art. (csme)      	  */ $("#issue_custom_field_values_"+$setting_article_type).val(article_csme.code_type_material);
 		/* Nº Serie (csme)       	  */ $("#issue_custom_field_values_"+$setting_serial_number).val(article_csme.serial_number);
 		/* Fecha Garantía (csme) 	  */ $("#issue_custom_field_values_"+$setting_date_guarantee).val(article_csme.date_guarantee);
 		/* Lote (csme)                */ $("#issue_custom_field_values_"+$setting_lot).val(article_csme.lot);
+
+		// Se comprueba el estado de garantía del artículo
+		dateToday = new Date();
+		article_guarantee = article_csme.date_guarantee;
+		article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
+
+		// Se selecciona el estado de garantía del artículo en el campo personalizado
+		$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
+			if((article_guarantee >= dateToday) && $(this).text() == "En garantía"){
+				$(this).prop("selected", true);
+			}
+
+			if((article_guarantee < dateToday) && $(this).text() == "Fuera de garantía"){
+				$(this).prop("selected", true);
+			}
+		});
+
+		// Se limpie el valor del campo personalizado 'Expediente Garantía (csme)' */
+		$("#issue_custom_field_values_"+$setting_file_guarantee).val("");
 
 		// Cerramos el dialog.
 		$("#dialog_articles_csme").dialog("close");
@@ -344,6 +363,22 @@ $(document).ready(function(){
 		
 		// Asignamos el nuevo valor de 'Fecha Garantía (csme)'
 		$("#issue_custom_field_values_"+$setting_file_guarantee).val(file_service_csme.code_file_services);
+
+		// Se comprueba el estado de garantía del artículo
+		dateToday = new Date();
+		article_guarantee = file_service_csme.date_guarantee;
+		article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
+
+		// Se selecciona el estado de garantía del artículo en el campo personalizado
+		$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
+			if((article_guarantee >= dateToday) && $(this).text() == "En garantía"){
+				$(this).prop("selected", true);
+			}
+
+			if((article_guarantee < dateToday) && $(this).text() == "En mantenimiento"){
+				$(this).prop("selected", true);
+			}
+		});
 		
 		// Cerramos el modal
 		$("#dialog_files_services_csme").dialog("close");
