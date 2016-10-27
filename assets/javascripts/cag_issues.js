@@ -229,18 +229,27 @@ $(document).ready(function(){
 		// Se comprueba el estado de garantía del artículo
 		dateToday = new Date();
 		article_guarantee = article_csme.date_guarantee;
-		article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
 
-		// Se selecciona el estado de garantía del artículo en el campo personalizado
-		$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
-			if((article_guarantee >= dateToday) && $(this).text() == "En garantía"){
-				$(this).prop("selected", true);
-			}
+		if(article_guarantee != null){
+			article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
+			
+			// Se selecciona el estado de garantía del artículo en el campo personalizado
+			$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
+				if((article_guarantee >= dateToday) && $(this).text() == "En garantía"){
+					$(this).prop("selected", true);
+				}
 
-			if((article_guarantee < dateToday) && $(this).text() == "Fuera de garantía"){
-				$(this).prop("selected", true);
-			}
-		});
+				if((article_guarantee < dateToday) && $(this).text() == "Fuera de garantía"){
+					$(this).prop("selected", true);
+				}
+			});
+		}else{
+			$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
+				if($(this).val() == ""){
+					$(this).prop("selected", true);
+				}
+			});
+		}
 
 		// Se limpie el valor del campo personalizado 'Expediente Garantía (csme)' */
 		$("#issue_custom_field_values_"+$setting_file_guarantee).val("");
@@ -367,18 +376,27 @@ $(document).ready(function(){
 		// Se comprueba el estado de garantía del artículo
 		dateToday = new Date();
 		article_guarantee = file_service_csme.date_guarantee;
-		article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
+		
+		if(article_guarantee != null){
+			article_guarantee = new Date(article_guarantee.split("-")[0], article_guarantee.split("-")[1]-1,article_guarantee.split("-")[2]);
 
-		// Se selecciona el estado de garantía del artículo en el campo personalizado
-		$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
-			if((article_guarantee >= dateToday) && $(this).text() == "En garantía"){
-				$(this).prop("selected", true);
-			}
+			// Se selecciona el estado de garantía del artículo en el campo personalizado
+			$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
+				if((article_guarantee >= dateToday) && $(this).text() == "En garantía"){
+					$(this).prop("selected", true);
+				}
 
-			if((article_guarantee < dateToday) && $(this).text() == "En mantenimiento"){
-				$(this).prop("selected", true);
-			}
-		});
+				if((article_guarantee < dateToday) && $(this).text() == "En mantenimiento"){
+					$(this).prop("selected", true);
+				}
+			});
+		}else{
+			$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
+				if($(this).val() == ""){
+					$(this).prop("selected", true);
+				}
+			});
+		}
 		
 		// Cerramos el modal
 		$("#dialog_files_services_csme").dialog("close");
