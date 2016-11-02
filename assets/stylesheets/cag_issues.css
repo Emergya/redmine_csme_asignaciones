@@ -42,6 +42,11 @@
 	margin-left: 75px;
 }
 
+.modal_loading_gif{
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
 /* CSS Style para cuando la petición pasa al estado 'Asignado a proveedor' / Modal */
 /* ------------------------------------------------------------------------------- */
 

@@ -65,6 +65,10 @@ function compareStatuses(data, status_id){
 		cod_article  = $("#prov_article", $("#btn_form_provider").parents("#dialog_providers")).val();
 		cod_provider = $("#prov_provider",$("#btn_form_provider").parents("#dialog_providers")).val();
 
+		// Indicamos que se esta buscando los artículos.
+		$(".cursive_length").remove();
+		$(".div_btn_provider").append("<i class='cursive_length'><img class='modal_loading_gif' src='/images/loading.gif' /> Por favor, espere un momento mientras se realiza la búsqueda.</i>");
+
 		// Petición para obtener proveedores de la tabla gg_contacts.
    		$.ajax({
 			url: "/get_providers",

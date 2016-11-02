@@ -121,6 +121,10 @@ $(document).ready(function(){
 		cod_adj       = $("#article_cod_adj",$("#btn_form_article_csme").parents("#dialog_articles_csme")).val();
 		serial_number = $("#article_serial_number",$("#btn_form_article_csme").parents("#dialog_articles_csme")).val();
 
+		// Indicamos que se esta buscando los artículos.
+		$(".cursive_length").remove();
+		$(".div_btn_article").append("<i class='cursive_length'><img class='modal_loading_gif' src='/images/loading.gif' /> Por favor, espere un momento mientras se realiza la búsqueda.</i>");
+
 		// Petición para obtener articulos de la table ISE_MATERIAL_DISTRIBUIDO_GARANTIAS.
    		$.ajax({
 			url: "/get_articles_csme",
@@ -280,6 +284,10 @@ $(document).ready(function(){
 	$(document).on("click", "#btn_form_file_service_csme", function(){
 		code_file = $("#service_code_file", $("#btn_form_file_service_csme").parents("#dialog_files_services_csme")).val();
 
+		// Indicamos que se esta buscando los expedientes asociados.
+		$(".cursive_length").remove();
+		$(".div_btn_file_service").append("<i class='cursive_length'><img class='modal_loading_gif' src='/images/loading.gif' /> Por favor, espere un momento mientras se realiza la búsqueda.</i>");
+
 		// Petición para obtener los expedientes.
    		$.ajax({
 			url: "/get_files_services_csme",
@@ -382,11 +390,11 @@ $(document).ready(function(){
 
 			// Se selecciona el estado de garantía del artículo en el campo personalizado
 			$("#issue_custom_field_values_"+$setting_guarantee_status+" option").each(function(){
-				if((article_guarantee >= dateToday) && $(this).text() == "En garantía"){
+				if((article_guarantee >= dateToday) && $(this).text() == "En mantenimiento"){
 					$(this).prop("selected", true);
 				}
 
-				if((article_guarantee < dateToday) && $(this).text() == "En mantenimiento"){
+				if((article_guarantee < dateToday) && $(this).text() == "Fuera de garantía"){
 					$(this).prop("selected", true);
 				}
 			});

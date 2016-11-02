@@ -75,18 +75,18 @@ module CAG
 		    		# [3.2] todo empty
 
 		    	if !cod_article.empty? && !cod_provider.empty? # 1.1
-		    		get_articles = GgArticle.where("code_article = ? AND code_provider = ?", cod_article, cod_provider)
+		    		get_articles = GgArticle.where("code_article LIKE '%#{cod_article}%' AND code_provider LIKE '%#{cod_provider}%'")
 		    	elsif !cod_file.empty?
 		    		if !cod_article.empty? # 2.1
-		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_article = ? AND gg_files.code_file = ?", cod_article, cod_file)
+		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_article LIKE '%#{cod_article}%' AND gg_files.code_file LIKE '%#{cod_file}%'")
 		    		elsif !cod_provider.empty? # 2.2
-		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_provider = ? AND gg_files.code_file = ?", cod_provider, cod_file)
+		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_provider LIKE '%#{cod_provider}%' AND gg_files.code_file LIKE '%#{cod_file}%'")
 		    		else # 2.3
-		    			get_articles = GgArticle.joins(:gg_file).where("gg_files.code_file = ?", cod_file)
+		    			get_articles = GgArticle.joins(:gg_file).where("gg_files.code_file LIKE '%#{cod_file}%'")
 		    		end
 		    	elsif cod_file.empty? && ( !cod_article.empty? || !cod_provider.empty?) # 3.1
-		    		get_articles = GgArticle.where("code_article = ?", cod_article) if !cod_article.empty?
-		    		get_articles = GgArticle.where("code_provider = ?", cod_provider) if !cod_provider.empty?
+		    		get_articles = GgArticle.where("code_article LIKE '%#{cod_article}%'") if !cod_article.empty?
+		    		get_articles = GgArticle.where("code_provider LIKE '%#{cod_provider}%'") if !cod_provider.empty?
 		    	end
 
     			respond_to do |format|
