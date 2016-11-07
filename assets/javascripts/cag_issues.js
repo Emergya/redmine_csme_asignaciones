@@ -223,7 +223,7 @@ $(document).ready(function(){
 
 	function setSelectArticle(article_csme){
 		// Variable para buscar un expediente de servicio de dicho artículo en caso de encontrarse fuera de ganrantía
-		expired_guarantee = false
+		expired_guarantee = false;
 
 		// Asignamos cada valor en cada campo personalizado de la agrupación 'Detalles del artículo - CSME'
 
@@ -252,11 +252,12 @@ $(document).ready(function(){
 
 			if((article_guarantee < dateToday)){
 				$("#issue_custom_field_values_"+$setting_guarantee_status).val("Fuera de garantía");
-				expired_guarantee = true
+				expired_guarantee = true;
 			}
 			
 		}else{
 			$("#issue_custom_field_values_"+$setting_guarantee_status).val("");
+			expired_guarantee = true;
 		}
 
 		// Se limpie el valor del campo personalizado 'Expediente Garantía (csme)' */
@@ -292,12 +293,12 @@ $(document).ready(function(){
 			data_file = file_service.code_file_services
 			data_guarantee = file_service.date_guarantee.split("-")[2]+"-"+(file_service.date_guarantee.split("-")[1])+"-"+file_service.date_guarantee.split("-")[0]
 			data_guarantee_aaa_mm_dd = file_service.date_guarantee.split("-")[0]+"-"+(file_service.date_guarantee.split("-")[1])+"-"+file_service.date_guarantee.split("-")[2]
-			$("#info_file_service").append("<center><p>Se ha encontrado el siguiente expediente asociado a dicho artículo.</p></center>");
+			$("#info_file_service").append("<center><p>Sin embargo, se ha encontrado el siguiente expediente de mantenimiento asociado a dicho artículo.</p></center>");
 			$("#info_file_service").append("<center><hr><p><b>Expediente:</b> "+ data_file + "&nbsp;&nbsp;<b>Fecha garantía:</b> "+ data_guarantee +"</p><hr></center>");
-			$("#info_file_service").append("<center><p>¿Desea asignar el expdiente asociado al artículo?</p></center>");
+			$("#info_file_service").append("<center><p>¿Desea asignar el expdiente al artículo?</p></center>");
 			$("#info_file_service").append("<center><button type='submit' id='btn_cancel_info_file_service'>Cancelar</button>&nbsp;&nbsp;<button type='submit' id='btn_acept_info_file_service' data-file='"+ data_file +"' data-guarantee='"+ data_guarantee_aaa_mm_dd +"'>Aceptar</button></center>");
 		}else{
-			$("#info_file_service").append("<center>No se ha encontrado ningún expediente asociado a dicho artículo.</center>");
+			$("#info_file_service").append("<center>No se ha encontrado ningún expediente de mantenimiento asociado a dicho artículo.</center>");
 		}
 	}
 
