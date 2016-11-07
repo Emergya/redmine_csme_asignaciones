@@ -39,7 +39,6 @@ function compareStatuses(data, status_id){
 				$(this).prop("selected", true);
 			}
 			else{
-				// $(this).prop("disabled", true);
 				$(this).remove();
 			}
 		});
@@ -75,7 +74,10 @@ function compareStatuses(data, status_id){
 			type: "GET",
 			data: { cod_file: cod_file, cod_article: cod_article, cod_provider: cod_provider },
 			success: function(response) { getProviders(response); },
-			error: function(xhr) { console.log(xhr); }
+			error: function(xhr) { console.log(xhr);
+								   $(".cursive_length").remove();
+								   $(".div_btn_article").append("<i class='cursive_length'><img class='modal_loading_gif' src='/images/exclamation.png' />Se ha producido un error al realizar la busqueda.</i>");
+			 					 }
 		});
 	}
 
@@ -134,6 +136,7 @@ function compareStatuses(data, status_id){
 
 // Eliminar los options del select 'assigned_to'
 function removeOptionsAssignedTo(){
+	$("#issue_group_id option").prop("selected", false);
 	$("#issue_assigned_to_id option").prop("selected", false);
 	$("#issue_assigned_to_id option").remove();
 }

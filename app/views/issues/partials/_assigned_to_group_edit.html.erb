@@ -35,14 +35,17 @@
 	<div class='form_dialog_label'><b>Código de centro:</b></div>
 	<div><input type="text" id="article_cod_center" name="center" disabled/></div>
 
+	<div class='form_dialog_label'><b>Código de expediente:</b></div>
+	<div><input type="text" id="article_cod_file" name="file"/></div>
+
 	<div class='form_dialog_label'><b>Código de artículo:</b></div>
 	<div>
 		<input type="text" id="article_cod_article" name="article" placeholder="Código"/> / 
 		<input type="text" id="article_type_article" name="type_article" placeholder="Tipo"/>
 	</div>
 
-	<div class='form_dialog_label'><b>Código de expediente:</b></div>
-	<div><input type="text" id="article_cod_file" name="file"/></div>
+	<div class='form_dialog_label'><b>Lote:</b></div>
+	<div><input type="text" id="article_lot" name="lot"/></div>
 
 	<div class='form_dialog_label'><b>Código adjudicatario:</b></div>
 	<div><input type="text" id="article_cod_adj" name="adj"/></div>
@@ -53,6 +56,12 @@
 	<br><hr class="hr_form_dialog">
 	<div class="div_btn_article"><button type="submit" id="btn_form_article_csme">Busqueda</button></div>
 	<hr class="hr_form_article_last">
+</div>
+
+<!-- DIALOG 'Fuera de garantía' -->
+<div id="dialog_expired_guarantee" title="Fuera de garantía">
+	<center><p><img class='modal_loading_gif' src='/images/warning.png' /> <b>El artículo se encuentra fuera de garantía.</b></p></center>
+	<div id="info_file_service"></div>
 </div>
 
 <!-- DIALOG 'Busqueda de expedientes asociados al contrato de mantenimiento' -->
@@ -103,6 +112,14 @@
 		modal: true,
 		minWidth: 1210,
 		maxWidth: 1210,
+	});
+
+	// Inicialización de la ventana modal dialog 'files_services'.
+	$("#dialog_expired_guarantee").dialog({ 
+		autoOpen: false,
+		modal: true,
+		minWidth: 550,
+		maxWidth: 810,
 	});
 
 	// Inicialización de la ventana modal dialog 'files_services'.

@@ -11,7 +11,7 @@ module CAG
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
 		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update, :create]
-		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme, :get_article_csme, :get_files_services_csme, :get_file_service_csme]
+		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme, :get_article_csme, :get_files_services_csme, :get_file_service_csme, :modal_get_file_service_csme]
 		  	end
 		end
 
@@ -157,6 +157,21 @@ module CAG
 
 		    	respond_to do |format|
 		    		format.json { render json: {:files_services_csme => file_service_csme.present? ? file_service_csme.attributes : nil} }
+		    	end
+		    end
+
+		    # Devuelve en formato .json el expediente de servicio.
+		    def modal_get_file_service_csme
+		    	code_file          = params[:article_csme][:code_file]
+		    	code_provider      = params[:article_csme][:code_provider]
+		    	code_article       = params[:article_csme][:code_article]
+		    	code_type_material = params[:article_csme][:code_type_material]
+		    	lot                = params[:article_csme][:lot]
+
+		    	file_service_csme =  GgFilesService.where("code_file = ? AND key_file = ? AND code_article = ? AND code_type_material = ? AND lot = ?", code_file, code_provider, code_article, code_type_material, lot)
+		    	
+		    	respond_to do |format|
+		    		format.json { render json: {:modal_file_service_csme => file_service_csme} }
 		    	end
 		    end
 		end

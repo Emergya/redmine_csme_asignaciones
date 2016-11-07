@@ -27,4 +27,7 @@ RedmineApp::Application.routes.draw do
 
 	# Ruta para obtener el expediente asociado al contrato de mantenimiento a través de AJAX
 	get '/get_file_service_csme', to: 'issues#get_file_service_csme', as: 'get_file_service_csme'
+
+	# Ruta para obtener los detalles del expediente asociado al artículo en el modal
+	get 'modal_get_file_service_csme', to: 'issues#modal_get_file_service_csme', as: 'modal_get_file_service_csme'
 end
