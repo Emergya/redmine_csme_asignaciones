@@ -290,13 +290,20 @@ $(document).ready(function(){
 
 		if(data.modal_file_service_csme.length > 0){
 			file_service = data.modal_file_service_csme[0].gg_files_service;
-			data_file = file_service.code_file_services
-			data_guarantee = file_service.date_guarantee.split("-")[2]+"-"+(file_service.date_guarantee.split("-")[1])+"-"+file_service.date_guarantee.split("-")[0]
-			data_guarantee_aaa_mm_dd = file_service.date_guarantee.split("-")[0]+"-"+(file_service.date_guarantee.split("-")[1])+"-"+file_service.date_guarantee.split("-")[2]
+			data_file = file_service.code_file_services ? file_service.code_file_services : " - ";
+			data_file_submit = file_service.code_file_services ? file_service.code_file_services : null;
+			if(file_service.date_guarantee != null){
+				data_guarantee = file_service.date_guarantee.split("-")[2]+"-"+(file_service.date_guarantee.split("-")[1])+"-"+file_service.date_guarantee.split("-")[0]
+				data_guarantee_aaa_mm_dd = file_service.date_guarantee.split("-")[0]+"-"+(file_service.date_guarantee.split("-")[1])+"-"+file_service.date_guarantee.split("-")[2]
+			}else{
+				data_guarantee = " - ";
+				data_guarantee_aaa_mm_dd = null;
+			}
+
 			$("#info_file_service").append("<center><p>Sin embargo, se ha encontrado el siguiente expediente de mantenimiento asociado a dicho artículo.</p></center>");
 			$("#info_file_service").append("<center><hr><p><b>Expediente:</b> "+ data_file + "&nbsp;&nbsp;<b>Fecha garantía:</b> "+ data_guarantee +"</p><hr></center>");
 			$("#info_file_service").append("<center><p>¿Desea asignar el expdiente al artículo?</p></center>");
-			$("#info_file_service").append("<center><button type='submit' id='btn_cancel_info_file_service'>Cancelar</button>&nbsp;&nbsp;<button type='submit' id='btn_acept_info_file_service' data-file='"+ data_file +"' data-guarantee='"+ data_guarantee_aaa_mm_dd +"'>Aceptar</button></center>");
+			$("#info_file_service").append("<center><button type='submit' id='btn_cancel_info_file_service'>Cancelar</button>&nbsp;&nbsp;<button type='submit' id='btn_acept_info_file_service' data-file='"+ data_file_submit +"' data-guarantee='"+ data_guarantee_aaa_mm_dd +"'>Aceptar</button></center>");
 		}else{
 			$("#info_file_service").append("<center>No se ha encontrado ningún expediente de mantenimiento asociado a dicho artículo.</center>");
 		}
@@ -304,6 +311,7 @@ $(document).ready(function(){
 
 	$(document).on("click", "#btn_cancel_info_file_service", function(){
 		$("#dialog_expired_guarantee").dialog("close");
+		$("#issue_custom_field_values_"+$setting_guarantee_status).val("Fuera de garantía");
 	});
 
 	$(document).on("click", "#btn_acept_info_file_service", function(){
@@ -312,6 +320,7 @@ $(document).ready(function(){
 
 		$("#issue_custom_field_values_"+$setting_file_guarantee).val(data_file);
 		$("#issue_custom_field_values_"+$setting_date_guarantee).val(data_guarantee);	
+
 		$("#issue_custom_field_values_"+$setting_guarantee_status).val("En mantenimiento");
 
 		$("#dialog_expired_guarantee").dialog("close");	
@@ -320,6 +329,7 @@ $(document).ready(function(){
 	// Añadir el botón por defecto en el caso de que el estado se encuentre previamente en 'Análisis de información CSMe'
 	if($("#issue_status_id").val() == $id_issue_status){
 		$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
+		$("#issue_custom_field_values_"+$setting_file_guarantee).attr('class','string_cf string_cf_exp');
 		$("#issue_custom_field_values_"+$setting_file_guarantee).after("<img id='btn_open_dialog_files_services' src='/images/add.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
 	}
 
