@@ -41,6 +41,7 @@ module CAG
             code_type_material = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_article_type]).first.value
             code_provider      = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_provider]).first.value
             code_file          = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_file]).first.value
+            code_lot           = self.custom_values.where("custom_field_id = ?", Setting.plugin_redmine_csme_asignaciones[:setting_issue_lot]).first.value
 
             file = GgFile.where("code_file = ?", code_file).first
             # Si no existe ningún expediente se realiza un rollback.
@@ -48,7 +49,7 @@ module CAG
               errors.add :base, l(:no_matches_files_csme)
               raise ActiveRecord::Rollback
             else
-              articles = file.gg_articles.where("code_article = ? AND code_type_material = ? AND code_provider = ?", code_article, code_type_material, code_provider).count
+              articles = file.gg_articles.where("code_article = ? AND code_type_material = ? AND code_provider = ? AND lot = ?", code_article, code_type_material, code_provider, code_lot).count
               # Si no existe ningún artículo se realiza un rollback.
               if articles == 0
                 errors.add :base, l(:no_matches_articles_csme)
