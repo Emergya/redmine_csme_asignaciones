@@ -4,18 +4,71 @@
 
 <fieldset>
 	<legend><b>Configuración de estados</b></legend>
+		<!-- Análisis de información CSME -->
+		<p class='config_select_status'>Estado de la petición para <i>'Análisis de información CSME'</i>:</p>
+		<%= select_tag 'settings[analysis_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['analysis_status']),
+			:include_blank => true
+		%>
+		<br>
+		
+		<!-- Información completada -->
+		<p class='config_select_status'>Estado de la petición para <i>'Información completada'</i>:</p>
+		<%= select_tag 'settings[information_completed_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['information_completed_status']),
+			:include_blank => true
+		%>
+		<br>
+
+		<!-- Asignado a proveedor -->
 		<p class='config_select_status'>Estado de la petición para <i>'Asignado a proveedor'</i>:</p>
 		<%= select_tag 'settings[provider_status]',
 			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['provider_status']),
 			:include_blank => true
 		%>
 		<br>
-		
-		<p class='config_select_status'>Estado de la petición para <i>'Análisis de información CSME'</i>:</p>
-		<%= select_tag 'settings[analysis_status]',
-			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['analysis_status']),
+
+		<!-- Solución temporal de proveedor -->
+		<p class='config_select_status'>Estado de la petición para <i>'Solución temporal de proveedor'</i>:</p>
+		<%= select_tag 'settings[st_provider_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['st_provider_status']),
 			:include_blank => true
 		%>
+		<br>
+
+		<!-- Resuelta por proveedor -->
+		<p class='config_select_status'>Estado de la petición para <i>'Resuelta por proveedor'</i>:</p>
+		<%= select_tag 'settings[r_provider_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['r_provider_status']),
+			:include_blank => true
+		%>
+		<br>
+
+		<!-- Rechazada -->
+		<p class='config_select_status'>Estado de la petición para <i>'Rechazada'</i>:</p>
+		<%= select_tag 'settings[rejected_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['rejected_status']),
+			:include_blank => true
+		%>
+		<br>
+
+		<!-- Reabierta -->
+		<p class='config_select_status'>Estado de la petición para <i>'Reabierta'</i>:</p>
+		<%= select_tag 'settings[reopened_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['reopened_status']),
+			:include_blank => true
+		%>
+		<br>
+
+		<!-- Resuelta -->
+		<p class='config_select_status'>Estado de la petición para <i>'Resuelta'</i>:</p>
+		<%= select_tag 'settings[resolved_status]',
+			options_from_collection_for_select(IssueStatus.uniq, :id, :name, @settings['resolved_status']),
+			:include_blank => true
+		%>
+
+
+
 </fieldset><br>
 
 <fieldset>

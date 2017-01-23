@@ -326,13 +326,6 @@ $(document).ready(function(){
 		$("#dialog_expired_guarantee").dialog("close");	
 	});	
 
-	// Añadir el botón por defecto en el caso de que el estado se encuentre previamente en 'Análisis de información CSMe'
-	if($("#issue_status_id").val() == $id_issue_status){
-		$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
-		$("#issue_custom_field_values_"+$setting_file_guarantee).attr('class','string_cf string_cf_exp');
-		$("#issue_custom_field_values_"+$setting_file_guarantee).after("<img id='btn_open_dialog_files_services' src='/images/add.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
-	}
-
 	// 2. BÚSQUEDA DEL EXPEDIENTE DE SERVICIO PARA LA NUEVA FECHA DE GARANTÍA
 	// ----------------------------------------------------------------------
 
@@ -471,4 +464,110 @@ $(document).ready(function(){
 		// Cerramos el modal
 		$("#dialog_files_services_csme").dialog("close");
 	}
+
+
+	// ----- CAMBIOS DE ESTADO -----
+	// Id del estado.
+	status_id = $("#issue_status_id").val();
+
+	// Petición para recibir el estado configurado para 'asignado a proveedor'.
+	$.ajax({
+		url: "/get_status",
+		type: "GET",
+		success: function(response) { compareStatusesOnLoad(response, status_id); },
+		error: function(xhr) { console.log(xhr); }
+	});
+
+	function compareStatusesOnLoad(data, status_id){
+	// NOTA: Esta función se encuetra 'duplicada' en update_form.js ya que cuando se cambia a otro estado el formulario se actualiza. Por lo que cualquier 
+	// cambio que se realice en esta función se ha comtemplar de la misma forma en update_form.js en el caso de que sea necesario.
+
+		// ANÁLISIS DE INFORMACIÓN
+		if(status_id == data.analysis_status){
+			$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
+
+			$("#issue_custom_field_values_"+$setting_file_guarantee).attr('class','string_cf string_cf_exp');
+			$("#issue_custom_field_values_"+$setting_file_guarantee).after("<img id='btn_open_dialog_files_services' src='/images/add.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
+		
+			// Se asignada en el campo de 'Asignado a grupo' el valor de 'CSMe'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() !== "CSMe"){
+					$(this).remove();
+				}
+			});
+		}
+
+		// INFORMACIÓN COMPLETADA
+		if(status_id == data.information_completed_status){
+			// Se asignada en el campo de 'Asignado a grupo' el valor de 'CSMe'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() !== "CSMe"){
+					$(this).remove();
+				}
+			});
+		}
+
+		// SOLUCIÓN TEMPORAL DE PROVEEDOR
+		if(status_id == data.st_provider_status){
+			// Se mantiene en el campo de 'Asignado a grupo' el valor de 'Servicio Técnico'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() == "Servicio Técnico"){
+					$(this).prop("selected", true);
+				}
+				else{
+					$(this).remove();
+				}
+			});
+			// Se mantiene en el campo 'Asignado a' el valor del proveedor que se encontraba en 'Asignada a proveedor'
+			$("#issue_assigned_to_id option").each(function(){
+				if($(this).text() == $("#issue_assigned_to_id option:selected" ).text()){
+					$(this).prop("selected", true);
+				}
+				else{
+					$(this).remove();
+				}
+			});
+		}
+
+		// RESUELTA POR PROVEEDOR
+		if(status_id == data.r_provider_status){
+			// Se asignada en el campo de 'Resuelta por proveedor' el valor de 'CSMe'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() !== "CSMe"){
+					$(this).remove();
+				}
+			});
+		}
+
+		// RECHAZADA
+		if(status_id == data.rejected_status){
+			// Se asignada en el campo de 'Rechazada' el valor de 'CSMe'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() !== "CSMe"){
+					$(this).remove();
+				}
+			});
+		}
+
+		// REABIERTA
+		if(status_id == data.reopened_status){
+			// Se asignada en el campo de 'Reabierta' el valor de 'CSMe'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() !== "CSMe"){
+					$(this).remove();
+				}
+			});
+		}
+
+		// RESUELTA
+		if(status_id == data.resolved_status){
+			// Se asignada en el campo de 'Resuelta' el valor de 'CSMe'
+			$("#issue_group_id option").each(function(){
+				if($(this).text() !== "CSMe"){
+					$(this).remove();
+				}
+			});
+		}
+	}
+
 });

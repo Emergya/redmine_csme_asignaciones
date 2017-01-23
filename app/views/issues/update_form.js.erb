@@ -18,10 +18,14 @@ $.ajax({
 });
 
 function compareStatuses(data, status_id){
-	// Eliminar los options del select 'assigned_to'
-	removeOptionsAssignedTo();
+	// // Eliminar los options del select 'assigned_to'
+	// removeOptionsAssignedTo();
 
+	// ASIGNADO A PROVEEDOR
 	if(status_id == data.provider_status){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
 		// Recogemos los valores de los campos 'Expediente', 'Cód.Artículo' y 'Cód.Proveedor'.
 		// y se muestran en el modal como valores por defecto.
 		$("#prov_file").val($("#issue_custom_field_values_"+$setting_file_id).val());
@@ -50,14 +54,110 @@ function compareStatuses(data, status_id){
 		$("#btn_open_dialog_providers").css("display","inline");
 	}
 
-	
+	// ANÁLISIS DE INFORMACIÓN
 	if(status_id == data.analysis_status){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
 		$("[id = 'Detalles del Artículo - CSME']").append("<img id='btn_open_dialog_articles' src='/images/edit.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
 
 		$("#issue_custom_field_values_"+$setting_file_guarantee).attr('class','string_cf string_cf_exp');
 		$("#issue_custom_field_values_"+$setting_file_guarantee).after("<img id='btn_open_dialog_files_services' src='/images/add.png' style='vertical-align: middle; margin-left: 5px; cursor: pointer; display: inline;'>");
+
+		// Se asignada en el campo de 'Asignado a grupo' el valor de 'CSMe'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() !== "CSMe" && $(this).val() !== ""){
+				$(this).remove();
+			}
+		});
 	}
-	
+
+	// INFORMACIÓN COMPLETADA
+	if(status_id == data.information_completed_status){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
+		// Se asignada en el campo de 'Asignado a grupo' el valor de 'CSMe'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() !== "CSMe" && $(this).val() !== ""){
+				$(this).remove();
+			}
+		});
+	}
+
+	// SOLUCIÓN TEMPORAL DE PROVEEDOR
+	if(status_id == data.st_provider_status){
+		// Se mantiene en el campo de 'Asignado a grupo' el valor de 'Servicio Técnico'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() == "Servicio Técnico"){
+				$(this).prop("selected", true);
+			}
+			else{
+				$(this).remove();
+			}
+		});
+		// Se mantiene en el campo 'Asignado a' el valor del proveedor que se encontraba en 'Asignada a proveedor'
+		$("#issue_assigned_to_id option").each(function(){
+			if($(this).text() == $("#issue_assigned_to_id option:selected" ).text()){
+				$(this).prop("selected", true);
+			}
+			else{
+				$(this).remove();
+			}
+		});
+	}
+
+	// RESUELTA POR PROVEEDOR
+	if(status_id == data.r_provider_status){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
+		// Se asignada en el campo de 'Resuelta por proveedor' el valor de 'CSMe'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() !== "CSMe" && $(this).val() !== ""){
+				$(this).remove();
+			}
+		});
+	}
+
+	// RECHAZADA
+	if(status_id == data.rejected_status){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
+		// Se asignada en el campo de 'Rechazada' el valor de 'CSMe'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() !== "CSMe" && $(this).val() !== ""){
+				$(this).remove();
+			}
+		});
+	}
+
+	// REABIERTA
+	if(status_id == data.reopened_status){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
+		// Se asignada en el campo de 'Reabierta' el valor de 'CSMe'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() !== "CSMe" && $(this).val() !== ""){
+				$(this).remove();
+			}
+		});
+	}
+
+	// RESUELTA
+	if(status_id == data.resolved_status){
+		// Eliminar los options del select 'assigned_to'
+		removeOptionsAssignedTo();
+
+		// Se asignada en el campo de 'Resuelta' el valor de 'CSMe'
+		$("#issue_group_id option").each(function(){
+			if($(this).text() !== "CSMe" && $(this).val() !== ""){
+				$(this).remove();
+			}
+		});
+	}
 }
 
 	function getProvidersAjax(){

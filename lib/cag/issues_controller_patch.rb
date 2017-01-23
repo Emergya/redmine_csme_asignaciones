@@ -22,11 +22,11 @@ module CAG
 			# Recoge todos los diferentes grupos de usuarios que exiten.
 		    def set_assigned_group
 		    	@assigned_groups = Group.order("lastname ASC").all.collect {|p| [p.lastname, p.id]}
-
-		    	if @issue.status.id != Setting.plugin_redmine_csme_asignaciones[:provider_status].to_i
-		    		@assigned_groups.reject!{ |x| x[0] == l(:thecnical_service) }
+		    	# Si el estado no se encuentra en 'Asignada a proveedor' o 'Resuelta por proveedor'
+		    	if (@issue.status.id != Setting.plugin_redmine_csme_asignaciones[:provider_status].to_i) && (@issue.status.id != Setting.plugin_redmine_csme_asignaciones[:st_provider_status].to_i)
+		    		@assigned_groups.reject!{ |x| x[0] == l(:thecnical_service) } # Eliminamos el grupo 'Servicio Técnico'
 		    	else
-		    		@assigned_groups.reject!{ |x| x[0] != l(:thecnical_service) }
+		    		@assigned_groups.reject!{ |x| x[0] != l(:thecnical_service) } # Eliminamos todos los grupos excepto 'Servicio Técnico'
 		    	end
 		    end
 
@@ -48,11 +48,25 @@ module CAG
 
 		    # Devuelve en formato .json los estados configurados en el plugin.
 		    def get_status
-		    	provider_status = Setting.plugin_redmine_csme_asignaciones[:provider_status]
-		    	analysis_status = Setting.plugin_redmine_csme_asignaciones[:analysis_status]
+		    	provider_status    = Setting.plugin_redmine_csme_asignaciones[:provider_status] #Asignado a proveedor
+		    	analysis_status    = Setting.plugin_redmine_csme_asignaciones[:analysis_status] # Análisis de información
+		    	information_completed_status = Setting.plugin_redmine_csme_asignaciones[:information_completed_status] # Información completada
+		    	st_provider_status = Setting.plugin_redmine_csme_asignaciones[:st_provider_status] # Solución temporal de proveedor
+		    	r_provider_status  = Setting.plugin_redmine_csme_asignaciones[:r_provider_status] # Resuelta por proveedor
+		    	rejected_status    = Setting.plugin_redmine_csme_asignaciones[:rejected_status] # Rechazada
+		    	reopened_status    = Setting.plugin_redmine_csme_asignaciones[:reopened_status] # Reabierta
+		    	resolved_status    = Setting.plugin_redmine_csme_asignaciones[:resolved_status] # Resuelta
 
 		    	respond_to do |format|
-		    		format.json { render json: {:provider_status => provider_status, :analysis_status => analysis_status} }
+		    		format.json { render json: { :provider_status => provider_status, 
+		    									 :analysis_status => analysis_status,
+		    									 :information_completed_status => information_completed_status,
+		    									 :st_provider_status => st_provider_status,
+		    									 :r_provider_status => r_provider_status,
+		    									 :rejected_status => rejected_status,
+		    									 :reopened_status => reopened_status,
+		    									 :resolved_status => resolved_status } 
+		    					}
 		    	end
 		    end
 
