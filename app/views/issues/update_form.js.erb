@@ -18,9 +18,6 @@ $.ajax({
 });
 
 function compareStatuses(data, status_id){
-	// // Eliminar los options del select 'assigned_to'
-	// removeOptionsAssignedTo();
-
 	// ASIGNADO A PROVEEDOR
 	if(status_id == data.provider_status){
 		// Eliminar los options del select 'assigned_to'
@@ -28,9 +25,14 @@ function compareStatuses(data, status_id){
 
 		// Recogemos los valores de los campos 'Expediente', 'Cód.Artículo' y 'Cód.Proveedor'.
 		// y se muestran en el modal como valores por defecto.
-		$("#prov_file").val($("#issue_custom_field_values_"+$setting_file_id).val());
-		$("#prov_article").val($("#issue_custom_field_values_"+$setting_article_id).val());
-		$("#prov_provider").val($("#issue_custom_field_values_"+$setting_provider_id).val());
+		if($("#issue_custom_field_values_"+$setting_file_guarantee).val() == ""){ 
+			// En el caso de que NO se encuentre un Expediente de Garantía (csme)
+			$("#prov_file").val($("#issue_custom_field_values_"+$setting_file_id).val());
+			$("#prov_article").val($("#issue_custom_field_values_"+$setting_article_id).val());
+			$("#prov_provider").val($("#issue_custom_field_values_"+$setting_provider_id).val());
+		}else{
+			$("#prov_file").val($("#issue_custom_field_values_"+$setting_file_guarantee).val());
+		}
 
 		// Hacemos la busqueda de proveedores por defecto al abrir el modal por primera vez.	
 		if(($("#issue_custom_field_values_"+$setting_file_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_article_id).val().length !== 0) || ($("#issue_custom_field_values_"+$setting_provider_id).val().length !== 0)){
