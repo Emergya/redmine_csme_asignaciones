@@ -122,6 +122,7 @@ $(document).ready(function(){
 		lot_article   = $("#article_lot", $("#btn_form_article_csme").parents("#dialog_articles_csme")).val();
 		cod_adj       = $("#article_cod_adj",$("#btn_form_article_csme").parents("#dialog_articles_csme")).val();
 		serial_number = $("#article_serial_number",$("#btn_form_article_csme").parents("#dialog_articles_csme")).val();
+		article  = $("#article_desc_article",$("#btn_form_article_csme").parents("#dialog_articles_csme")).val();
 
 		// Indicamos que se esta buscando los artículos.
 		$(".cursive_length").remove();
@@ -131,7 +132,7 @@ $(document).ready(function(){
    		$.ajax({
 			url: "/get_articles_csme",
 			type: "GET",
-			data: { article_csme: { code_center: cod_center, code_article: cod_article, code_type_material: type_article, code_file: cod_file, lot: lot_article, adj: cod_adj, serial_number: serial_number} },
+			data: { article_csme: { code_center: cod_center, code_article: cod_article, code_type_material: type_article, code_file: cod_file, lot: lot_article, adj: cod_adj, serial_number: serial_number, article: article} },
 			success: function(response) { getArticlesCsme(response); },
 			error: function(xhr) { console.log(xhr);
 								   $(".cursive_length").remove();
