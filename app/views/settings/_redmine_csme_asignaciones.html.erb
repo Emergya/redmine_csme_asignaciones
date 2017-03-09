@@ -156,3 +156,18 @@
 		%>
 
 </fieldset>
+
+<fieldset>
+	<legend>Campos personalizados de provincias</legend>
+	<p class='config_label_fields_csme'>Provincia del usuario:</p>
+		<%= select_tag 'settings[user_province]',
+			options_from_collection_for_select(UserCustomField.all, :id, :name, @settings['user_province']),
+			:include_blank => true
+			%>
+	<br>
+	<p class='config_label_fields_csme'>Provincia de la petición:</p>
+		<%= select_tag 'settings[issue_province]',
+			options_from_collection_for_select(IssueCustomField.all, :id, :name, @settings['issue_province']),
+			:include_blank => true
+			%>
+</fieldset>

@@ -43,6 +43,15 @@ module CAG
             when 'group'
               user_ids = [user.id] + user.groups.map(&:id).compact
               "(#{table_name}.author_id = #{user.id} OR #{table_name}.assigned_to_id IN (#{user_ids.join(',')})) OR #{table_name}.group_id IN (#{user_ids.join(',')})"
+            when 'province'
+              if Setting.plugin_redmine_csme_asignaciones[:issue_province].present? and Setting.plugin_redmine_csme_asignaciones[:user_province].present?
+                user_province = Array(user.custom_values.where(custom_field_id: Setting.plugin_redmine_csme_asignaciones[:user_province]))
+                if user_province.present?
+                  issue_ids = CustomValue.where("custom_field_id = ? AND value IN (?)", Setting.plugin_redmine_csme_asignaciones[:issue_province], Array(user_province.map(&:value)))
+                  return "(#{table_name}.id IN (#{issue_ids.map(&:customized_id).join(',')}))" if issue_ids.present?
+                end
+              end
+              return '1=0'
             else
               '1=0'
             end
@@ -69,6 +78,18 @@ module CAG
               when 'group'
                 user_groups = user.groups.map(&:id).compact
                 user_groups.include? self.group_id
+              when 'province'
+                if Setting.plugin_redmine_csme_asignaciones[:issue_province].present? and Setting.plugin_redmine_csme_asignaciones[:user_province].present?
+                  issue_province = self.custom_values.where(custom_field_id: Setting.plugin_redmine_csme_asignaciones[:issue_province])
+                  user_province = Array(user.custom_values.where(custom_field_id: Setting.plugin_redmine_csme_asignaciones[:user_province]))
+                  if issue_province.present? and user_province.present?
+                    Array(user_province.map(&:value)).include?(issue_province.first.value)
+                  else
+                    false
+                  end
+                else
+                  false
+                end
               else
                 false
               end
