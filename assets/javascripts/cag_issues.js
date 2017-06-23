@@ -1,4 +1,59 @@
 $(document).ready(function(){
+	issue_status_id = $("#issue_status_id").val();
+	changeTracker(issue_status_id);
+
+	function changeTracker(issue_status_id){
+		switch(issue_status_id){
+			// Asignado a proveedor
+			case "16":
+				getProviderContacts();
+				break;
+			default:
+				// group_id = $("#issue_group_id").val();
+				// if (group_id != null){
+				// 	getUsersGroup(group_id);
+				// }
+		}
+	}
+
+	function getProviderContacts(){
+		article_code = $('#issue_custom_field_values_'+$setting_article_id).val();
+		provider_code = $('#issue_custom_field_values_'+$setting_provider_id).val();
+		lot = $('#issue_custom_field_values_'+$setting_lot).val();
+
+		if (article_code != null && provider_code != null && lot != null){
+			$.ajax({
+				url: "/get_provider_id",
+				type: "GET",
+				data: { article_code: article_code, provider_code: provider_code, lot: lot },
+				success: function(response) {  
+					$.ajax({
+						url: "/get_provider_contacts",
+						type: "GET",
+						data: { provider_id: response.provider_id },
+						success: function(response) { 
+							contacts = jQuery.parseJSON(response.contacts);
+
+							if (contacts.length > 0){
+								// Eliminar los options del select 'assigned_to'
+								removeOptionsAssignedTo();
+
+								// Añadimos los contactos encontrados como opciones al campo "Asignado a"
+								contacts.forEach(function(contact, index, a){
+									option = $('<option/>').attr({'value': contact.id}).text(contact.firstname+" "+contact.lastname);
+								
+									$("#issue_assigned_to_id").append(option);
+								});
+							}
+						},
+						error: function(xhr) { console.log(xhr); }
+					});
+				},
+				error: function(xhr) { console.log(xhr); }
+			});
+		}
+	}
+
 
 	// FUNCIONALIDAD PARA CUANDO UNA PETICIÓN PASA AL ESTADO 'ASIGNADO A PROVEEDOR'
 	//-----------------------------------------------------------------------------
@@ -8,7 +63,12 @@ $(document).ready(function(){
 		// Id del grupo
    		group_id = $("#issue_group_id").val();
    		
-   		// Petición para recibir los usuarios que pertenecen a ese grupo.
+		// Petición para recibir los usuarios que pertenecen a ese grupo.
+   		getUsersGroup(group_id);
+	});
+
+	// Método para recibir los usuarios que pertenecen a un grupo.
+	function getUsersGroup(group_id){
    		$.ajax({
 			url: "/get_users_group",
 			type: "GET",
@@ -16,7 +76,7 @@ $(document).ready(function(){
 			success: function(response) { reloadAssignedTo(response); },
 			error: function(xhr) { console.log(xhr); }
 		});
-	});
+	}
 
 	function reloadAssignedTo(data){
 		// Eliminar los options del select 'assigned_to'
@@ -34,13 +94,7 @@ $(document).ready(function(){
 			provider_id = $("input[type='radio'][name='provider_id']:checked").val();
 
 			// Petición para obtener el contacto del proveedor.
-	   		$.ajax({
-				url: "/get_provider_contact",
-				type: "GET",
-				data: { provider_id: provider_id },
-				success: function(response) { setSelectProvider(response.contact); },
-				error: function(xhr) { console.log(xhr); }
-			});
+	   		getProviderContact(provider_id);
 		} else {
 			// Mostramos un mensaje de error indicando que debe seleccionar un proveedor.
 			$(".container_providers").append("<i class='contact_not_found'>Debe seleccionar un proveedor.</i>");	
@@ -48,6 +102,17 @@ $(document).ready(function(){
 			$("#btn_container_providers").attr("disabled", true);	
 		}
 	});
+
+	// Método para obtener el contacto de un proveedor.
+	function getProviderContact(provider_id){
+		$.ajax({
+			url: "/get_provider_contact",
+			type: "GET",
+			data: { provider_id: provider_id },
+			success: function(response) { setSelectProvider(response.contact); },
+			error: function(xhr) { console.log(xhr); }
+		});
+	}
 
 	function setSelectProvider(contact){
 		if($.isEmptyObject(contact)){

@@ -30,4 +30,10 @@ RedmineApp::Application.routes.draw do
 
 	# Ruta para obtener los detalles del expediente asociado al artículo en el modal
 	get 'modal_get_file_service_csme', to: 'issues#modal_get_file_service_csme', as: 'modal_get_file_service_csme'
+
+	# Rutar para obtener el id del proveedor/articulo
+	get '/get_provider_id', to: 'issues#get_provider_id', as: 'get_provider_id'
+
+	# Ruta para obtener los contactos del proveedor a través de AJAX
+	get '/get_provider_contacts', to: 'issues#get_provider_contacts', as: 'get_provider_contacts'
 end

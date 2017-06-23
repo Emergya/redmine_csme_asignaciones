@@ -11,7 +11,7 @@ module CAG
 			base.class_eval do
 		    	unloadable  # Send unloadable so it will be reloaded in development
 		    	before_filter :set_assigned_group, :only => [:show, :new, :update_form, :update, :create]
-		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme, :get_article_csme, :get_files_services_csme, :get_file_service_csme, :modal_get_file_service_csme]
+		    	skip_before_filter :authorize, :only => [:get_users_group, :get_status, :get_providers, :get_code_file, :get_provider_contact, :get_articles_csme, :get_article_csme, :get_files_services_csme, :get_file_service_csme, :modal_get_file_service_csme, :get_provider_id, :get_provider_contacts]
 		  	end
 		end
 
@@ -186,6 +186,36 @@ module CAG
 		    	
 		    	respond_to do |format|
 		    		format.json { render json: {:modal_file_service_csme => file_service_csme} }
+		    	end
+		    end
+
+		    # Devuelve en formato .json el id del proveedor
+		    def get_provider_id
+		    	provider_code = params[:provider_code]
+		    	article_code = params[:article_code]
+		    	lot = params[:lot]
+
+		    	article = GgArticle.where(code_provider: provider_code, code_article: article_code, lot: lot)
+
+		    	respond_to do |format|
+		    		format.json { render json: {:provider_id => (article.present? ? article.first.id : "")} }
+		    	end
+		    end
+
+		    # Devuelve en formato .json los contactos del proveedor.
+		    def get_provider_contacts
+		    	article = GgArticle.find(params[:provider_id])
+
+		    	contacts = []
+		    	(1..3).each do |i|
+			    	if article["level_#{i}".to_sym].present?
+			    		contact = User.find_by_id(article["level_#{i}".to_sym])
+			    		contacts << contact.attributes if contact.present?
+			    	end
+			    end
+			    
+		    	respond_to do |format|
+		    		format.json { render json: {:contacts => contacts.to_json} }
 		    	end
 		    end
 		end
