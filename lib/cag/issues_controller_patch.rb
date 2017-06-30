@@ -89,19 +89,21 @@ module CAG
 		    		# [3.2] todo empty
 
 		    	if !cod_article.empty? && !cod_provider.empty? # 1.1
-		    		get_articles = GgArticle.where("code_article LIKE '%#{cod_article}%' AND code_provider LIKE '%#{cod_provider}%'")
+		    		get_articles = GgArticle.where("code_article = ? AND code_provider = ?", cod_article, cod_provider)
 		    	elsif !cod_file.empty?
 		    		if !cod_article.empty? # 2.1
-		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_article LIKE '%#{cod_article}%' AND gg_files.code_file LIKE '%#{cod_file}%'")
+		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_article = ? AND gg_files.code_file = ?", cod_article, cod_file)
 		    		elsif !cod_provider.empty? # 2.2
-		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_provider LIKE '%#{cod_provider}%' AND gg_files.code_file LIKE '%#{cod_file}%'")
+		    			get_articles = GgArticle.joins(:gg_file).where("gg_articles.code_provider = ? AND gg_files.code_file = ?", cod_provider, cod_file)
 		    		else # 2.3
-		    			get_articles = GgArticle.joins(:gg_file).where("gg_files.code_file LIKE '%#{cod_file}%'")
+		    			get_articles = GgArticle.joins(:gg_file).where("gg_files.code_file = ?", cod_file)
 		    		end
 		    	elsif cod_file.empty? && ( !cod_article.empty? || !cod_provider.empty?) # 3.1
-		    		get_articles = GgArticle.where("code_article LIKE '%#{cod_article}%'") if !cod_article.empty?
-		    		get_articles = GgArticle.where("code_provider LIKE '%#{cod_provider}%'") if !cod_provider.empty?
+		    		get_articles = GgArticle.where("code_article = ?", cod_article) if !cod_article.empty?
+		    		get_articles = GgArticle.where("code_provider = ?", cod_provider) if !cod_provider.empty?
 		    	end
+
+		    	get_articles = get_articles.order('name_provider ASC, name_article ASC')
 
     			respond_to do |format|
 		    		format.json { render json: {:providers => get_articles.flatten} }
@@ -135,13 +137,18 @@ module CAG
 				
 				params[:article_csme].each_with_index do |prop_article, index|
 					if !prop_article[1].empty?
-						query_article << "#{prop_article[0]} LIKE '%#{prop_article[1]}%' AND "
+						case prop_article[0]
+						when 'article'
+							query_article << "#{prop_article[0]} LIKE '%#{prop_article[1]}%' AND "
+						else
+							query_article << "#{prop_article[0]} = '#{prop_article[1]}' AND "
+						end
 					end	
 				end
 
 				query_article.chomp!(" AND ")
-				articles_csme = GgMaterial.where(query_article).order("date_guarantee DESC")
-				
+				articles_csme = GgMaterial.where(query_article).order("date_guarantee DESC, provider ASC, article ASC")
+
 				respond_to do |format|
 		    		format.json { render json: {:articles_csme => articles_csme} }
 		    	end	    	
@@ -158,7 +165,7 @@ module CAG
 
 		    # Devuelve en formato .json los expedientes de servicios de gg_files_services.
 		    def get_files_services_csme
-		    	files_services_csme =  GgFilesService.where("code_file LIKE '%#{params[:code_file]}%'").order("date_guarantee DESC")
+		    	files_services_csme =  GgFilesService.where("code_file = ?", params[:code_file]).order("date_guarantee DESC")
 
 		    	respond_to do |format|
 		    		format.json { render json: {:files_services_csme => files_services_csme} }
@@ -213,7 +220,7 @@ module CAG
 			    		contacts << contact.attributes if contact.present?
 			    	end
 			    end
-			    
+
 		    	respond_to do |format|
 		    		format.json { render json: {:contacts => contacts.to_json} }
 		    	end
