@@ -113,7 +113,7 @@ module CAG
 		    # Devuelve en formato.json el codigo del expediente.
 		    def get_code_file
 		    	article = GgArticle.find params[:file_id]
-		    	file = GgFile.select("code_file").find(article.gg_file_id)
+		    	file = GgFile.select("code_file").find_by_identity_file(article.gg_file_id)
 
 		    	respond_to do |format|
 		    		format.json { render json: {:code_file => file.code_file} }
@@ -123,7 +123,7 @@ module CAG
 		    # Devuelve en formato .json el contacto de nivel 1 del proveedor.
 		    def get_provider_contact
 		    	article = GgArticle.find(params[:provider_id])
-		    	contact = article.level_1.present? ? User.find(article.level_1) : nil
+		    	contact = article.contacts.level_1.present? ? User.find(article.contacts.level_1) : nil
 
 		    	respond_to do |format|
 		    		format.json { render json: {:contact => contact.present? ? contact.attributes : nil} }
@@ -190,7 +190,7 @@ module CAG
 		    	lot                = params[:article_csme][:lot]
 
 		    	file_service_csme =  GgFilesService.where("code_file = ? AND key_file = ? AND code_article = ? AND code_type_material = ? AND lot = ?", code_file, code_provider, code_article, code_type_material, lot)
-		    	
+
 		    	respond_to do |format|
 		    		format.json { render json: {:modal_file_service_csme => file_service_csme} }
 		    	end
